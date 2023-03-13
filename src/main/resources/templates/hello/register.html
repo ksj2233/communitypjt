@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인페이지</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/sign-up.css">
+    <script src="https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min.js"></script>
+    <script src="/js/Implement/verbalexpressions.js"></script>
+    <script src="/js/Implement/verbalexpressions.min.js"></script>
+
+</head>
+
+<body>
+    <!-- [header] 영역 시작 -->
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <!-- [header] 영역 끝 -->
+
+    <!--중간 body-content-->
+    <div class="body-content">
+        <div class="content-box1">
+        </div>
+        <div class="content-box2"></div>
+        <div class="content-box3"></div>
+        <div class="content-box4"></div>
+    </div>
+    <!-- <a id="open-login">로그인</a> -->
+    <!-- Modal -->
+    <div id="myModal" class="mymodal">
+        <div id="mymodal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2>회원 가입</h2>
+                </div>
+                <div class="modal-body">
+                    <form name="signup-form" id="signup-form" th:action="@{/hello/register}" method="post"
+                        th:onsubmit="return OkSubmit2()">
+                        <input type="hidden" name="purview" value="false">
+                        <div class="form-group">
+                            <label for="user_id">
+                                아이디
+                            </label>
+                            <div class="input-box">
+                                <input type="text" name="id" class="idtest" id="user_id" />
+                                <button type='button' id="idChk" onclick="fn_idChk();">중복확인</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="user_pw">
+                                비밀번호
+                            </label>
+                            <div class="input-box">
+                                <input type="password" name="pw" id="pw" />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="user_pw">
+                                비밀번호 확인
+                            </label>
+                            <div class="input-box">
+                                <input type="password" name="pw_re" id="pw_re" />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="user_name">
+                                이름
+                            </label>
+                            <div class="input-box">
+                                <input type="text" name="name" id="user_name" />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="user_name">
+                                닉네임
+                            </label>
+                            <div class="input-box">
+                                <input type="text" name="nickname" class="nickname" id="user_nick" />
+                                <button type='button' id="nickChk" onclick="fn_nickChk();">중복 확인</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="email">
+                                이메일
+                            </label>
+                            <div class="input-box">
+                                <input type="email" name="email" id="email" />
+                            </div>
+                        </div>
+                        <input type="hidden" value=0 id="test_1" name="test_1">
+                        <input type="hidden" value=0 id="test_2" name="test_2">
+                        <br>
+                        <div class="form-group">
+                            <div class="form-button">
+                                <button type="submit" id="submit">가입하기</button>
+                                <button type="reset">다시 작성</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--메인바 공통-->
+    <div class="bar">
+        <div class="mainbar">
+            <ul>
+                <li><a href="/hello/communitylist">
+                        <p class="imgtitle on">커뮤니티</p><img src="/img/1board.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="/hello/qnalist">
+                        <p class="imgtitle on">Q&A</p><img src="/img/2Q&A.png" alt="" width="48px" height="48px">
+                    </a>
+                </li>
+                <li><a href="/hello/noticelist">
+                        <p class="imgtitle on">공지사항</p><img src="/img/4notice.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="/hello/myspace">
+                        <p class="imgtitle on">내공간</p><img src="/img/3my.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="/hello/point">
+                        <p class="imgtitle on">포인트</p><img src="/img/5point.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="/hello/message">
+                        <p class="imgtitle on">쪽지</p><img src="/img/6message.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/room','blank','width=450 , height=700, top=400, left=900', true)">
+                        <p class="imgtitle on">채팅</p><img src="/img/7.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/calculator','blank','width=350 , height=650, top=400, left=900', true)">
+                        <p class="imgtitle on">계산기</p><img src="/img/8.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/memo','blank','width=450 , height=600, top=400, left=900', true)">
+                        <p class="imgtitle on">메모장</p><img src="/img/9.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'icon/tetris','blank','width=450 , height=600, top=400, left=900', true)">
+                        <p class="imgtitle on">테트리스</p><img src="/img/10.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/compass','blank','width=450 , height=600, top=400, left=900', true)">
+                        <p class="imgtitle on">나침반</p><img src="/img/11.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/stopwatch','blank','width=450 , height=450, top=400, left=900', true)">
+                        <p class="imgtitle on">스톱워치</p><img src="/img/12.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li>
+                    <div>
+                        <p class="imgtitle on">캡쳐</p><img src="/img/13.png" id="edit" alt="" width="48px"
+                            height="48px"><a id="target" style="display: none"></a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <p class="imgtitle on">구글검색</p><img src="/img/14.png" alt="" width="48px" height="48px"
+                            class="google">
+                    </div>
+                </li>
+                <li><a href="https://www.github.com" target="_blanck">
+                        <p class="imgtitle on">깃허브</p><img src="/img/15.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="https://www.acmicpc.net" target="_blanck">
+                        <p class="imgtitle on">백준</p><img src="/img/16.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="https://www.mvnrepository.com" target="_blanck">
+                        <p class="imgtitle on">메이븐</p><img src="/img/17.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="https://www.fontawesome.com" target="_blanck">
+                        <p class="imgtitle on">폰트</p><img src="/img/18.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="https://www.jobkorea.co.kr" target="_blanck">
+                        <p class="imgtitle on">잡코리아</p><img src="/img/19.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="https://www.youtube.com" target="_blanck">
+                        <p class="imgtitle on">유튜브</p><img src="/img/20.png" alt="" width="48px" height="48px">
+                    </a></li>
+                <li><a href="https://www.keduit.com" target="_blanck">
+                        <p class="imgtitle on">한정교</p><img src="/img/21.png" alt="" width="48px" height="48px">
+                    </a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+
+        $(".close").on("click", function () {
+            $("#myModal").hide();
+        });
+    </script>
+    <script type="text/javascript">
+
+        function fn_idChk() {
+            var id = $("#user_id").val();
+
+            $.ajax({
+                url: '/hello/register/' + id,
+                type: 'POST',
+                data: JSON.stringify(id),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'text',
+                success: function (result) {
+                    if (result == 1) {
+                        alert('아이디가 중복입니다.');
+                        document.getElementById('test_1').value = 0;
+                    } else {
+                        alert('사용가능한 아이디 입니다.');
+                        document.getElementById('test_1').value = 1;
+                    }
+                }
+            })
+        };
+
+        function fn_nickChk() {
+            var nick = $("#user_nick").val();
+
+            $.ajax({
+                url: '/hello/register/chk/' + nick,
+                type: 'POST',
+                data: JSON.stringify(nick),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'text',
+                success: function (result) {
+                    if (result == 1) {
+                        alert('닉네임이 중복입니다.');
+                        document.getElementById('test_2').value = 0;
+                    } else {
+                        alert('사용가능한 닉네임입니다.');
+                        document.getElementById('test_2').value = 1;
+                    }
+                }
+            })
+        };
+
+        function OkSubmit2() {
+            var id = $(".idtest").val();
+            var pw1 = document.getElementById('pw').value;
+            var pw2 = document.getElementById('pw_re').value;
+            var testid = document.getElementById('test_1').value;
+            var testnick = document.getElementById('test_2').value;
+            var name = document.getElementById('user_name').value;
+            var email = document.getElementById('email').value;
+            var UNN = $("#user_nick").val();
+
+            // 8자 이상 20자 이하 하나 이상의 대문자, 소문자, 숫자로 이루어진 비밀번호 체크하는 정규식 
+            const idIs = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+            // 8자 이상 20자 이하 하나 이상의 소문자 숫자 특수문자로 이루어진 비밀번호 체크하는 정규식 
+            const pwIs = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+            // 이메일 정규식
+            const emailIs = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+            // 이름 정규식
+            const nameIs = /^[가-힣]{2,8}$/;
+            // 닉네임 정규식
+            const UNNIs = /^[a-zA-Z0-9가-힣]{2,12}$/;
+
+            if ((!idIs.test(id))||(id.trim() == '')) {
+                alert("아이디는 8자 이상 20자 이하 하나 이상의 대문자, 소문자, 숫자를 포함하여 작성해주세요.");
+                $(".idtest").val("");
+                $(".idtest").focus();
+                return false;
+            } else if ((!pwIs.test(pw1))||(pw1.trim() == '')) {
+                alert('비밀번호는 8자 이상 20자 이하 하나 이상의 소문자 숫자 특수문자를 포함하여 작성해주세요.');
+                $("#pw").val("");
+                $("#pw").focus();
+                return false;
+            } else if (pw1 != pw2) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return false;
+            } else if (testid == 0) {
+                alert("ID 중복확인을 눌러주세요.");
+                return false;
+            } else if ((!UNNIs.test(UNN))||(UNN.trim() == '')) {
+                alert("두글자 이상 12글자 이하의 닉네임으로 작성해주세요.");
+                $("#user_nick").val("");
+                $("#user_nick").focus();
+                return false;
+            } else if (testnick == 0) {
+                alert("닉네임 중복확인을 눌러주세요.");
+                return false;
+            } else if ((!nameIs.test(name))||(name.trim() == '')) {
+                $("#user_name").val("");
+                $("#user_name").focus;
+                alert("두글자 이상의 한글 이름을 써주세요");
+                return false;
+            } else if ((!emailIs.test(email))||(email.trim() == '')) {
+                alert("올바른 이메일 형식이 아닙니다.");
+                return false;
+            }
+        }
+
+    </script>
+
+
+</body>
+
+</html>

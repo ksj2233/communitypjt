@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>쪽지함</title>
+	<link rel="stylesheet" href="/css/message.css">
+	<link rel="stylesheet" href="/css/footer.css">
+</head>
+
+<body>
+	<!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+	
+	<div class="content-body">
+		<div class="content-header-box">
+			<div class="content-body-left">
+				<div class="content-body-left-header">
+					<h1>쪽지</h1>
+					<div class="main">
+
+						<!--디폴트 메뉴-->
+						<input id="tab1" type="radio" name="tabs" checked>
+						<label for="tab1" id="post-label">받은 내역</label>
+						<input id="tab2" type="radio" name="tabs"> 
+						<label for="tab2">보낸 내역</label>
+
+						<!--세선 1-->
+						<section id="content1">
+							<div class="content-body-left-body" th:each="getList:${getMsg}">
+								<div class="content-box">
+									<div class="content-userimg">
+										<img class="profile-img" th:if="${getList.memUrl == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+                						<img class="profile-img" th:if="${getList.memUrl != null}" th:src="'/hello/display?fileName='+${getList.memUrl}" >
+									</div>
+									<div class="content-username">
+										<a th:href="@{/hello/spacepage(id=${getList.id})}">
+											[[${getList.nickname}]]
+										</a>
+									</div>
+									<div class="message-title" id="msg-title" th:attr="data-message-num=${getList.messageNum}" onclick="readMessage(this)">[[${getList.title}]]</div>
+									<div class="content-time">[[${getList.changeDate}]]</div>
+									<div class="content-delete">
+										<button th:attr="data-message-num=${getList.messageNum}, data-view-num=${getList.view}" onclick="deleteMessage(this)">삭제</button>
+									</div>
+								</div>
+							</div>
+						</section>
+
+						<!--세선 2-->
+						<section id="content2">
+ 							<div class="content-body-left-body" th:each="giveList:${giveMsg}">
+								<div class="content-box">
+									<div  class="content-userimg">
+										<img class="profile-img" th:if="${giveList.memUrl == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+                						<img class="profile-img" th:if="${giveList.memUrl != null}" th:src="'/hello/display?fileName='+${giveList.memUrl}" >
+									</div>
+									<div class="content-username">
+										<a th:href="@{/hello/spacepage(id=${giveList.id})}">
+											[[${giveList.nickname}]]
+										</a>
+									</div>
+									<div class="message-title" th:attr="data-message-num=${giveList.messageNum}" onclick="readMessage(this)">[[${giveList.title}]]</div>
+									<div class="content-time">[[${giveList.changeDate}]]</div>
+									<div class="content-delete">
+										<button th:attr="data-message-num=${giveList.messageNum}, data-view-num=${giveList.view}" onclick="deleteMessage(this)">삭제</button>
+									</div>
+								</div>
+							</div>
+						</section>
+
+					</div>
+				</div>
+			</div>
+			 	<div class="content-body-right"></div>
+		</div>
+	</div>
+
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	   let selNickname;
+	   let msgNum;
+	   let yourNum;
+	   let myNum = /*[[${myInfo.memberNum}]]*/ {};
+	   
+      //쪽지 목록에서 제목 클릭 시 조회 화면이 뜨게
+      function readMessage(div){
+         let messageNum = $(div).data('message-num');
+         let data = {
+            'messageNum': messageNum,
+         }
+
+         $.ajax({
+            url : '/hello/message/read',
+            type : 'POST',
+            data: data,
+            contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+            success : function(result){
+               let {memberGet, memberGive, nickname, title, content} = result   // let memberGet = result.memberGet과 같은 뜻!
+               
+               let readMsg = "";
+               
+               msgNum = messageNum;
+               
+               yourNum = (myNum == memberGet) ? memberGive :  memberGet ;
+               
+               readMsg += `<div class="content-body-right-box">
+                           <h1>조회</h1> 
+                           <div class="box-top"> 
+                              <div class="user-title nick"><h2>닉네임</h2></div> 
+                              <div class="user-content"> ${nickname} </div> 
+                           </div> 
+                           <div class="box-top"> 
+                              <div class="user-title"><h2>제목</h2></div> 
+                              <div class="user-content"> ${title} </div> 
+                           </div> 
+                           <div class="box-bottom"> 
+                              <div class="user-title">
+                                 <h2>내용</h2>
+                              </div> 
+                              <div class="user-content">
+                                 <p> ${content} </p>
+                              </div> 
+                           </div> 
+                           </div> 
+                           <div class="button-box"> 
+                           <button onclick="writeMessage()">작성하기</button> 
+                        </div>
+                        `;
+
+               $(".content-body-right").html(readMsg);
+               selNickname = nickname;
+            }
+         });
+      }
+	
+	
+      //조회 화면에서 작성하기 버튼 클릭 시 작성 화면이 뜨게
+      function writeMessage(){
+         let rdata = {
+               'selNickname': selNickname
+         }
+
+         $(".content-body-right").html("");
+
+         let registerMsg = "";
+         
+         registerMsg += `<div class="content-body-right-box">
+						     <h1>작성</h1>
+					         <div class="box-top">
+						         <div class="user-title"><h2>닉네임</h2></div>
+						         <div class="user-content">${rdata.selNickname}</div>
+				        	 </div> 
+					         <div class="box-top"> 
+						         <div class="user-title"><h2>제목</h2></div> 
+						         <div class="user-content"><input type="text" class="title-text" id="mustTitle"></div> 
+					         </div>
+					         <div class="box-bottom"> 
+						         <div class="user-title"><h2>내용</h2></div> 
+						         <div class="user-content"><textarea id="mustContent" cols="40" rows="12" class="content-text"></textarea></div> 
+					         </div> 
+				         </div> 
+				         
+				         <div class="button-box"> 
+				        	 <button type="button" onclick="registerBtn()">전송하기</button> 
+				         </div>
+	                    `;
+                      
+         $(".content-body-right").html(registerMsg);
+      }
+	
+      
+      //전송 버튼 클릭 시 
+      function registerBtn() {
+         
+         // 발송 전 제목,본문 공백 및 최대 글자수 체크
+         if (($("#mustTitle").val().trim() == '') || ($("#mustTitle").val().length > 15)) {
+            alert("제목이 비어있거나 너무 깁니다.");
+            $("#mustTitle").val("");
+            $("#mustTitle").focus();
+            return false;
+         } else if (($("#mustContent").val() == '') || ($("#mustContent").val().length > 300)) {
+            alert("본문이 비어있거나 너무 깁니다.");
+            $("#mustContent").val("");
+            $("#mustContent").focus();
+            return false;
+         } 
+         if(!confirm("전송하시겠습니까?")){
+            return false;
+         }
+         
+         var rtitle = $(".title-text").val();
+         var rcontent = $(".content-text").val();
+
+         var regdata = {
+               'title': rtitle,
+               'content': rcontent,
+               'messageNum' : msgNum,
+               'yourNum' : yourNum
+         }
+         $.ajax({
+            url : '/hello/message/register',
+            type : 'POST',
+            data : regdata,
+            contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+            success : function(result){
+               location.reload();
+            },
+            error : function(){
+               alert("경고");
+            }
+         });
+      }
+
+
+      //조회 화면에서 삭제 버튼 클릭 시 
+      function deleteMessage(button){
+
+         var messageNum = $(button).data('message-num');
+         var viewNum = $(button).data('view-num');
+         var data = {
+               'messageNum': messageNum,
+               'view': viewNum
+         }
+         
+         console.log(data);
+
+         $.ajax({
+            url : '/hello/message/delete',
+            type : 'delete',
+            data : data,
+            contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+            success : function(result){
+               if(result == "success"){
+               location.reload();
+               }
+            }
+         });
+      }
+  	 /*]]>*/
+	</script>
+
+
+	
+	<footer th:replace="fragments/footer :: footerFragment"></footer>
+
+</body>
+</html>

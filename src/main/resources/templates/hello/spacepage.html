@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정보페이지</title>
+    <link rel="stylesheet" href="/css/myspace.css">
+    <link rel="stylesheet" href="/css/follower.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body class="body">
+    <!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+
+    <!--content-->
+    <nav class="subnavbar">
+        <div class="box">
+            <ul>
+                <li class="user-img">
+                 	 <img th:if="${member.url == null}" src="/img/c1.png" alt="" width="70px" height="70px">
+                	 <img th:if="${member.url != null}" width="70px" height="70px" th:src="'/hello/display?fileName='+${member.url}" ></li>
+                <li class="text">
+                	<img th:if="${member.exvalue} < 100" src="/img/a1.png">
+                	<img th:if="${member.exvalue} >= 100 and ${member.exvalue} < 200" src="/img/a2.png">
+                	<img th:if="${member.exvalue} >= 200 and ${member.exvalue} < 300" src="/img/a3.png">
+                	<img th:if="${member.exvalue} >= 300 and ${member.exvalue} < 400" src="/img/a4.png">
+                	<img th:if="${member.exvalue} >= 400" src="/img/a5.png">
+                	
+                </li>
+                <li class="text"><p><!--[[${member.name}]]님의--> 경험치 : [[${member.exvalue}]]점</p></li>
+            </ul>
+        </div>
+        <div class="box1">
+            <h1>[[${member.nickname}]]님 의 공간
+            	<a th:if="${how == 0}" th:href="@{/hello/spacepage/insertF(id=${member.id})}"><img src="/img/star.png" alt="" width="25px" height="25px"></a>
+            	<a th:if="${how != 0}" th:href="@{/hello/spacepage/removeF(id=${member.id})}"><img src="/img/starfull.png" alt="" width="25px" height="25px"></a>
+            </h1>
+
+        </div>
+        <div class="box2">
+            <h4 id="modalFollowing">팔로잉 : [[${following.size()}]]명</h4>
+        </div>
+        <div class="box3">
+            <h4 id="modalFollower">팔로워 : [[${follower.size()}]]명</h4>
+        </div>
+    </nav>
+    <div class="line">
+    </div>
+    <div class="content">
+        <div class="div-content">
+            <h1>소개</h1>
+            <div class="content-introduce">
+                	<h3>[[${member.introduce}]]</h3>
+            </div>
+        </div>
+        <div class="div-content">
+            <h1>게시글</h1>
+            <div class="content-board">
+                <div class="register-box">
+                	<div class="box5">게시글 위치</div>
+                    <div class="box2">게시글 제목</div>
+                    <div class="box2">조회수</div>
+                    <div class="box3">추천수</div>
+                    <div class="box5">작성일</div>
+                </div>
+                <div class="register-box" th:each="dto:${myBoard}">
+                    <div class="box5">
+                    	<div th:if="${dto.boardcase == 1}">커뮤니티</div>
+                    	<div th:if="${dto.boardcase == 2}">공지사항</div>
+                    	<div th:if="${dto.boardcase == 3}">QnA</div>
+                    </div>
+                    <div class="box2">
+                    	<a class="text1" id="text1" th:if="${dto.boardcase == 1}" th:href="@{/hello/communityread(boardNum=${dto.boardNum})}">[[${dto.title}]]</a>
+                    	<a class="text1" id="text1" th:if="${dto.boardcase == 2}" th:href="@{/hello/noticeread(boardNum=${dto.boardNum})}">[[${dto.title}]]</a>
+                    	<a class="text1" id="text1" th:if="${dto.boardcase == 3}" th:href="@{/hello/qnaread(boardNum=${dto.boardNum})}">[[${dto.title}]]</a>
+                    </div>
+                    <div class="box2">[[${dto.views}]]</div>
+                    <div class="box3">[[${dto.blikes}]]</div>
+                    <div class="box5">[[${#temporals.format(dto.updateDate, 'yyyy/MM/dd')}]]</div>
+                </div>
+            </div>
+        </div>
+        <div class="div-content">
+            <h1>댓글 내역</h1>
+            <div class="content-chat">
+                <div class="register-box">
+                    <div class="box2">댓글 위치</div>
+                    <div class="box1">댓글 내용</div>
+                    <div class="box3">추천수</div>
+                    <div class="box5">등록일</div>
+                </div>
+               <div class="register-box" th:each="com:${myComment}">
+                    <div class="box2">
+                    	<div th:if="${com.boardcase == 1}">커뮤니티</div>
+                    	<div th:if="${com.boardcase == 2}">공지사항</div>
+                    	<div th:if="${com.boardcase == 3}">QnA</div>
+                    </div>
+                    <div class="box1" th:if="${com.boardcase == 1}" id="text1"><a class="text1" th:href="@{/hello/communityread(boardNum=${com.boardNum})}">[[${com.commentContent}]]</a></div>
+                    <div class="box1" th:if="${com.boardcase == 2}" id="text1"><a class="text1" th:href="@{/hello/noticeread(boardNum=${com.boardNum})}">[[${com.commentContent}]]</a></div>
+                    <div class="box1" th:if="${com.boardcase == 3}" id="text1"><a class="text1" th:href="@{/hello/qnaread(boardNum=${com.boardNum})}">[[${com.commentContent}]]</a></div>
+                    <div class="box3">[[${com.clikes}]]</div>
+                    <div class="box5">[[${#temporals.format(com.updatedate, 'yyyy/MM/dd')}]]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal_call">
+	</div>
+	
+	<!-- Modal -->
+<div id="myModal" class="modal call1 hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>팔로워</h2>
+    </div>
+    <div class="modal-body">
+      <div class="box" th:each="follow:${follower}">
+        <div class="box-userimg">
+                 	 <img th:if="${follow.url == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+                	 <img th:if="${follow.url != null}" width="30px" height="30px" th:src="'/hello/display?fileName='+${follow.url}" ></div>
+        <div class="box-username"><a th:href="@{/hello/spacepage(id=${follow.id})}">[[${follow.nickname}]]</a></div>
+      </div>
+      <!-- Add more content as needed -->
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<div id="myModal" class="modal call2 hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>팔로잉</h2>
+    </div>
+    <div class="modal-body">
+      <div class="box" th:each="followi:${following}">
+        <div class="box-userimg">
+        		<img th:if="${followi.url == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+                <img th:if="${followi.url != null}" width="30px" height="30px" th:src="'/hello/display?fileName='+${followi.url}" ></div>
+        <div class="box-username"><a th:href="@{/hello/spacepage(id=${followi.id})}">[[${followi.nickname}]]</a></div>
+      </div>
+     </div>
+  </div>
+ </div>
+      <!-- Add more content as needed -->
+    	 <!-- Modal -->
+   <div id="myModal" class="modal call3 hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>회원 가입</h2>
+            </div>
+            <div class="modal-body">
+                <form name="signup-form" id="signup-form" th:action="@{/hello/modify}" method="post">
+                    <div class="form-group">
+                        <label for="user_id">
+                            아이디
+                        </label>
+                        <div class="input-box">
+                             <input type="text" name="id" th:value="${member.id}" readonly/>
+                            <!-- placeholder readonly-->
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="user_pw">
+                            비밀번호
+                        </label>
+                        <div class="input-box">
+                            <input type="password" name="pw" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="user_pw">
+                            비밀번호 확인
+                        </label>
+                        <div class="input-box">
+                            <input type="password" name="pw_re" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="user_name">
+                            이름
+                        </label>
+                        <div class="input-box">
+                            <input type="text" name="name" id="user_name" th:value="${member.name}" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="user_name">
+                            닉네임
+                        </label>
+                        <div class="input-box">
+                            <input type="text" name="nickname" id="user_nick" th:value="${member.nickname}"/>
+                            <button>중복 확인</button>
+                        </div>
+                    </div>
+                    <br>
+                     <div class="form-group">
+                        <label for="introduce">
+                            자기소개
+                        </label>
+                        <div class="input-box">
+                            <textarea name="introduce" id="introduce" rows="20" cols="30">[[${member.introduce}]]</textarea>
+                        </div>
+                    </div> 
+                    <br>
+                    <div class="form-group">
+                        <label for="email">
+                            이메일
+                        </label>
+                        <div class="input-box">
+                            <input type="text" name="email" id="email" th:value="${member.email}"/>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>
+                            사진넣기
+                        </label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input files" 
+	               					id="fileInput"/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="memberNum" th:value="${member.memberNum}">
+                    <input type="hidden" name="point" th:value="${member.point}">
+                    <input type="hidden" name="purview" th:value="${member.purview}">
+                    <input type="hidden" name="exvalue" th:value="${member.exvalue}">
+                    <br>
+                    <div class="form-group">
+                        <div class="form-button">
+                            <button type="submit">수정하기</button>
+                            <button type="reset">다시 작성</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+
+<script>
+
+  // 모달창 관련
+	$("#modalFollowing").on("click", function(){
+	   $(".call2").show();
+	});
+
+	$("#modalFollower").on("click", function(){
+	   $(".call1").show();
+	});
+	$(".myMamber").on("click", function(){
+	   $(".call3").show();
+	});
+
+	$(".close").on("click", function(){
+	   $(".call1").hide();
+	  $(".call2").hide();
+	  $(".call3").hide();
+	});
+
+	
+	var modal1 =$(".call1");
+	var modal2 =$(".call2");
+
+	
+	$(window).click(function(event) {
+	  if (event.target == modal1[0]) {
+	    modal1.css("display", "none");
+	  }
+	});
+	$(window).click(function(event) {
+	  if (event.target == modal2[0]) {
+	    modal2.css("display", "none");
+	  }
+	});
+  // 모달창 end
+  
+  //사진 업로드 
+  
+  $(document).ready(function(e){
+    	  var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
+          var maxSize = 10485760; //10MB
+          
+          function checkExtension(fileName, fileSize){
+
+              if(fileSize >= maxSize){
+                  alert("파일 사이즈 초과");
+                  return false;
+              }
+
+              if(regex.test(fileName)){
+                  alert("해당 종류의 파일은 업로드할 수 없습니다.");
+                  return false;
+              }
+              
+              return true;
+          }
+  
+ $(".custom-file-input").on("change", function() {
+        	  
+        	  var fileName = $(this).val().split("\\").pop();
+        	  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        	  
+        	  var formData = new FormData();
+
+              var inputFile = $(this);
+
+              var files = inputFile[0].files;
+
+              var appended = false;
+
+              for (var i = 0; i < files.length; i++) {
+
+                  if(!checkExtension(files[i].name, files[i].size) ){
+                      return false;
+                  }
+
+                  console.log("=== files[i]===> "+files[i]);
+                  
+                  formData.append("uploadFiles", files[i]);
+                  appended = true;
+              }
+              
+              if (!appended) {return false;}
+
+              for (var value of formData.values()) {
+                  console.log(value);
+              }
+              
+       // ajax로 업로드 하기 
+       
+              $.ajax({
+                  url: '/uploadAjax',
+                  processData: false,
+                  contentType: false,
+                  data: formData,
+                  type: 'POST',
+                  dataType:'Json',
+                  success: function(result){
+                      console.log("success : " + result);
+                      showResult(result);
+                  },
+                  error: function(jqXHR, textStatus, errorThrown){
+                      console.log(textStatus);
+                  }
+              }); //$.ajax
+          });
+          
+      		  
+  //제목 수 10개 제한걸이
+  const text1 = document.getElementById("text1");
+	const content = text1.innerHTML;
+	const shortenedContent = content.substring(0, 15) + "...";
+	text1.innerHTML = shortenedContent;
+        	  });  // end event
+       
+  
+  // 사진업로드 and
+  
+  // 글자수 15제한
+  	function truncateText() {
+  var elements = document.getElementsByClassName("text1");
+  for (var i = 0; i < elements.length; i++) {
+    var html = elements[i].innerHTML.trim();
+    if (html.length > 15) {
+      html = html.substr(0, 15) + "...";
+      elements[i].innerHTML = html;
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  truncateText();
+});
+
+  
+</script>
+  <footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+
+</html>

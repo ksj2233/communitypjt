@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html	lang="ko"
+	xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="innerHeader" th:fragment="headerFragment">
+<script src="/js/ajax/main.js"></script>
+        <h1 class="logo"><a href="/hello/index"><img src="/img/logo.png" alt="apple" width="40px"
+                    height="25px"></a></h1>
+        <!--왼쪽바 공통-->
+        <nav class="mainmenu-left">
+            <ul class="navbar">
+               
+            </ul>
+        </nav>
+        <!--오른쪽바 공통-->
+        <nav class="mainmenu-right">
+            <ul class="navbar">
+                <li><img src="/img/battery.png" alt="" width="30px" height="25px"></li>
+                <li><img src="/img/wifi.png" alt="" width="20px" height="25px"></li>
+                <li><img class="siri" src="/img/siri.png" alt="" width="20px" height="25px" onclick="siri()"></li>
+                
+                
+               <li sec:authorize="!isAuthenticated"><a id="open-login" th:href="@{/hello/main}">로그인</a></li>
+               <li sec:authorize="isAuthenticated" style="color:white"><a sec:authentication="name" th:href="@{/hello/myspace}">불러온id값</a></li>
+             <!-- sec:authentication="principal.id -->
+             	
+                <li sec:authorize="isAuthenticated"><a id="open-login" th:href="@{/logout}">로그아웃</a></li>
+                <li sec:authorize="!isAuthenticated"><a id="open-signup" th:href="@{/hello/register}">회원가입</a></li>  
+            </ul>
+        </nav>
+    </div>
+    
+    <script th:src="@{/js/jquery/jquery.min.js}"></script>
+    
+    
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<meta charset="UTF-8">
+	<title>Chating</title>
+	<style>
+		/* 스크롤바 설정*/ 
+		.message-box::-webkit-scrollbar {
+			width: 10px;
+		}
+
+		/* 스크롤바 막대 설정*/
+		.message-box::-webkit-scrollbar-thumb {
+			background-color: rgba(255, 255, 255, 1);
+			/* 스크롤바 둥글게 설정    */
+			border-radius: 10px;
+		}
+
+		/* 스크롤바 뒷 배경 설정*/
+		.message-box::-webkit-scrollbar-track {
+			background-color: rgba(0, 0, 0, 0);
+		}
+
+		h1 {
+			text-align: center;
+		}
+
+		/* 노말라이징 */
+		body,
+		ul,
+		li {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		/* 라이브러리 */
+		.con {
+			max-width: 1000px;
+			margin: 0 auto;
+		}
+
+		/* 커스텀 */
+		@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+		body {
+			font-family: 'Noto Sans KR', sans-serif;
+			overflow-y: hidden;
+			overflow-x: hidden;
+		}
+
+		body,
+		html {
+			height: 100%;
+		}
+
+		#chat-room {
+			height: 100%;
+			background-color: #6884b3;
+			/* 임시 */
+			outline: 2px solid black;
+			position: relative;
+		}
+
+		#chat-room .message-box {
+			padding: 0 0.7rem;
+			overflow-y: scroll;
+			height: calc(100% - 4.4rem);
+		}
+
+		#chat-room .message-group::before {
+			content: attr(data-date-str);
+			display: block;
+			background-color: rgba(0, 0, 0, 0.15);
+			border-radius: 1rem;
+			text-align: center;
+			padding: 0.3rem 0;
+			color: white;
+			font-size: 1.6rem;
+		}
+
+		#chat-room .chat-message {
+			/* margin-left: 3rem; */
+			position: relative;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+		#chat-room .chat-message>section {
+			position: absolute;
+			top: 0;
+			left: -3rem;
+		}
+
+		#chat-room .chat-message>span {
+			display: block;
+		}
+
+		#chat-room .chat-message>section {
+			font-size: 3rem;
+		}
+
+		#chat-room .chat-message::after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+
+		#chat-room .chat-message>div {
+			background-color: white;
+			float: left;
+			padding: 5px;
+			border-radius: 1rem;
+			clear: both;
+			font-weight: bold;
+			font-size: 15px;
+			box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+		}
+
+		#chat-room .chat-message.mine>div {
+			background-color: rgb(106, 190, 106);
+			float: right;
+			box-shadow: -1px 1px 0 rgba(0, 0, 0, 0.3);
+		}
+
+		#chat-room .chat-message.mine>span {
+			display: none;
+		}
+
+		#chat-room .chat-message.mine>section {
+			display: none;
+		}
+
+		#chat-room .input-box {
+			position: absolute;
+			bottom: 20;
+			left: 0;
+			width: 100%;
+		}
+
+		#chat-room .input-box #chatting {
+			width: 100%;
+			display: block;
+			border: 0;
+			outline: none;
+			padding-right: 8.5rem;
+			padding-left: 4.8rem;
+			padding-top: 0.1rem;
+			font-size: 1.4rem;
+			line-height: 3rem;
+			font-weight: bold;
+			box-sizing: border-box;
+		}
+
+		#chat-room .input-box .btn-plus {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 4rem;
+			height: 100%;
+			background-color: #D1D1D1;
+		}
+
+		#chat-room .input-box .btn-plus>i {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-50%) translateY(-45%);
+			color: white;
+			font-size: 3rem;
+		}
+
+		#chat-room .input-box .btn-submit {
+			position: absolute;
+			right: 1rem;
+			top: 50%;
+			transform: translateY(-50%);
+			padding: 10px;
+			background-color: rgb(50, 240, 50);
+			padding: 10px;
+			color: rgb(39, 33, 33);
+			border-radius: 3px;
+			font-size: 1.3rem;
+			box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+			user-select: none;
+		}
+
+		#chat-room .input-box .btn-emo {
+			position: absolute;
+			right: 6rem;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 2rem;
+			color: #CBCBCB;
+			user-select: none;
+		}
+	</style>
+</head>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var ws;
+	const roomNumber = /*[[${roomNumber}]]*/ {};
+	const userNickname = /*[[${member.nickname}]]*/ {};
+	const userExValue = /*[[${member.exvalue}]]*/ {};
+	const userNum = /*[[${member.memberNum}]]*/ {};
+	wsOpen();
+
+
+	function wsOpen() {
+		//웹소켓 전송시 현재 방의 번호를 넘겨서 보낸다.
+		ws = new WebSocket("ws://" + location.host + "/chatting/" + roomNumber);
+		wsEvt();
+	}
+
+	function wsEvt() {
+		ws.onopen = function (data) {
+			//소켓이 열리면 동작
+			console.log('열려부럿따.');
+			open_and_close_socket(userNickname + '님이 입장하셨습니다.');
+		}
+
+		ws.onmessage = function (data) {
+			//메시지를 받으면 동작
+			var msg = data.data;
+			console.log(msg);
+			if (msg != null && msg.trim() != '') {
+				var d = JSON.parse(msg);
+				if (d.type == "getId") {
+					var si = d.sessionId != null ? d.sessionId : "";
+					if (si != '') {
+						$("#sessionId").val(si);
+					}
+				} else if (d.type == "message") {
+					if (d.userName == userNickname) {
+						$(".message-box").append('<div class="chat-message mine"><section><i class="fa fa-user"></i></section><span>' + userNickname + '</span><div>' + d.msg + '</div></div>');
+						scrolldown();
+					} else {
+						$(".message-box").append('<div class="chat-message other"><section><i class="fa fa-user"></i></section><span>' + d.userName + '</span><div>' + d.msg + '</div></div>');
+					}
+
+				} else if (d.type == "intro") {
+					$(".message-box").append('<div class="message-group" data-date-str="' + d.msg + '">');
+				} else {
+					console.warn("unknown type!");
+				}
+			}
+		}
+
+		document.addEventListener("keypress", function (e) {
+			if ((e.keyCode == 13) && ($("#chatting").val().trim() != "")) { //enter press
+				send();
+			}
+		});
+
+		ws.onclose = function (data) {
+			//소켓이 닫히면 동작
+			console.log('닫혀부러따');
+			open_and_close_socket(myName + '님이 나가셨습니다.');
+		}
+		window.addEventListener("beforeunload", function () {
+			socket.close();
+		});
+	}
+
+	function send() {
+		var option = {
+			type: "message",
+			'roomNumber': roomNumber,
+			sessionId: $("#sessionId").val(),
+			userName: userNickname,
+			msg: $("#chatting").val()
+		}
+		ws.send(JSON.stringify(option))
+		$('#chatting').val("");
+	}
+
+	function open_and_close_socket(msg) {
+		var message = {
+			'type': "intro",
+			'userNum': userNum,
+			'roomNumber': roomNumber,
+			'sessionId': $("#sessionId").val(),
+			'userName': userNickname,
+			'msg': msg
+		}
+		ws.send(JSON.stringify(message))
+	}
+
+	function scrolldown() {
+		$(".message-box").scrollTop($(".message-box")[0].scrollHeight);
+	}
+	
+	/*]]>*/
+</script>
+
+<body>
+	<div id="chat-room">
+		<div class="backimg">
+			<img src="/img/back.png" alt="뒤로가기" width="50px" onclick="history.back()">
+		</div>
+		<div class="message-box">
+			<h1>[[${roomName}]]</h1>
+
+		</div>
+		<div class="input-box">
+			<input type="text" id="chatting">
+			<!-- <div class="btn-plus">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</div> -->
+			<div class="btn-emo">
+				<i class="fa fa-smile-o" aria-hidden="true"></i>
+			</div>
+			<div class="btn-submit">
+				<span onclick="send()">전송</span>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

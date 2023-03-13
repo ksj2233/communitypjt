@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/noticelist.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <script th:src="@{/js/jquery/jquery.min.js}"></script>
+</head>
+
+<body>
+    <!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+    
+    <!-- 게시판 상단 -->
+    <div class="content-header">
+        <div class="header-box">
+            <div class="h1-box">
+                <h1>notice</h1>
+            </div>
+            <div class="registration-box" sec:authorize="hasRole('ADMIN')">
+                <button id="registration" onclick="location.href='/hello/noticeregister' ">작성하기</button>
+            </div>
+            <div class="search-box">
+            	<form id="searchForm" action="/hello/noticelist" method="get">
+	                <div class="search">
+	                	 <select name="type" >
+		                    <option value="" 
+		                    	th:selected="${pageRequestDTO.type==null}"
+		                    		>-----</option>
+		                    <option value="t" 
+		                      	th:selected="${pageRequestDTO.type=='t'}"
+		                      		>제목</option>
+		                    <option value="c"
+		                     	th:selected="${pageRequestDTO.type=='c'}"
+		                     		>내용</option>
+		                    <option value="tc"
+		                      th:selected="${pageRequestDTO.type=='tc'}"
+		                       		>제목 or 내용</option>
+		                  </select>
+	                    <input type="text" name="keyword" th:value="${pageRequestDTO.keyword}" placeholder="검색어 입력">
+	                    <button type="button" class="btn btn-search">검색</button>
+	                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end 게시판 상단 -->
+    
+    <div class="content-body">
+        <div class="body-box">
+        
+    		<!-- 게시판 list -->
+            <div th:each="dto : ${result.dtoList}" class="table-box">
+                <div class="user-box">
+                    <div class="name-box">
+                        <h3>관리자 <small>[[${dto.id}]]</small></h3>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="top-box">
+                        <h2>
+                        <a th:href="@{/hello/noticeread(boardNum=${dto.boardNum},
+                               page=${result.page},
+                               type=${pageRequestDTO.type},
+							   keyword=${pageRequestDTO.keyword}
+                               )}">[[${dto.title}]]</a></h2>
+                    </div>
+                    <div class="bottom-box">
+                        <div class="box1">추천수 : [[${dto.blikes}]]</div>
+                        <div class="box2">조회수 : [[${dto.views}]]</div>
+                        <div class="box3">[[${#temporals.format(dto.regdate, 'yyyy/MM/dd')}]]</div>
+                        <div class="box4"><a th:href="@{/hello/noticeread(boardNum=${dto.boardNum},
+                               page=${result.page},
+                               type=${pageRequestDTO.type},
+							   keyword=${pageRequestDTO.keyword}
+                               )}"><button>확인하기</button></a></div>
+                    </div>
+                </div>
+            </div>
+    		<!-- end 게시판 list -->
+            
+          
+        <div class="page_wrap">
+		<ul class=" page_nation">
+			<li class="arrow prev" th:if="${result.prev}">
+				<a class="page-link" 
+					th:href="@{/hello/noticelist(page=${result.start-1},
+									type=${pageRequestDTO.type},
+									keyword=${pageRequestDTO.keyword}
+					)}" tabindex="-1">이전</a>
+			</li>
+			<li th:class="'page-item ' "
+			th:each="page: ${result.pageList}"><a th:class="'page-link ' + ${result.page == page?'active':''}" 
+				th:href="@{/hello/noticelist(page=${page},
+									type=${pageRequestDTO.type},
+									keyword=${pageRequestDTO.keyword}
+				)}">[[${page}]]</a>
+				
+			
+			<li class="page-item" th:if="${result.next}">
+				<a class="page-link" 
+				th:href="@{/hello/noticelist(page=${result.end},
+									type=${pageRequestDTO.type},
+									keyword=${pageRequestDTO.keyword}
+				)}">다음</a>
+			</li>		
+				
+		</ul>
+            
+            
+        </div>
+        </div>
+    </div>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+<script th:inline="javascript">
+
+			var searchForm = $("#searchForm");
+			
+			$('.btn-search').click(function(e){
+				
+				searchForm.submit();
+			});
+			
+			$('.btn-clear').click(function(e){
+				
+				searchForm.empty().submit();
+			});
+			
+			
+</script>
+
+
+</html>

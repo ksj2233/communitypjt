@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    
+* {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+    /*모달창 로그인*/
+.login {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.login_content {
+    background-color: white;
+    position: relative;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.login_content button{
+    float: right;
+    background-color: white;
+    color: steelblue;
+    padding: 5px 20px;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.login-wrapper {
+    width: 400px;
+    height: 360px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+}
+
+.login-wrapper h2 {
+    font-size: 24px;
+    color: #a54b16;
+    margin-bottom: 20px;
+}
+
+#login-form input {
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+}
+
+#login-form input::placeholder {
+    color: #D2D2D2;
+}
+
+#login-form input[type="submit"] {
+    color: #fff;
+    font-size: 16px;
+    background-color: #a54b16;
+    margin-top: 20px;
+}
+
+#login-form input[type="submit"]:hover {
+    background-color: #632b0a;
+}
+
+.login-api{
+    width: 100%;
+    height: 40px;
+}
+.login-api .kakaoimg{
+    float: left;
+}
+.login-api .googleimg{
+   float: right;
+}
+
+.login-wrapper .login-wrapper-bottom{
+    width: 90%;
+    height: 30px;
+    margin-top: 15px;
+    margin-left: 45px;
+}
+.login-wrapper .login-wrapper-bottom ul{
+    width: 250px;
+    height: 30px;
+    margin: auto;
+}
+.login-wrapper .login-wrapper-bottom ul li{
+    float: left;
+    margin: 0 10px;
+}
+.login-wrapper .login-wrapper-bottom ul li a{
+    color: black;
+}
+</style>
+<body>
+    <a id="open-login">로그인</a>
+    <!--로그인-->
+    <div class="login hidden">
+        <div class="login_overlay"></div>
+        <div class="login_content">
+            <button>X</button>
+            <div class="login-wrapper">
+                <h2>로그인</h2>
+                <form method="post" action="#" id="login-form">
+                    <input type="text" name="userID" placeholder="ID">
+                    <input type="password" name="userPassword" placeholder="Password">
+                    <input type="submit" value="Login">
+                </form>
+                <div class="login-api">
+                    <div class="kakaoimg"><img src="../img/kakao.png" alt="" height="40px"></div>
+                    <div class="googleimg"><img src="../img/google.png" alt="" height="40px"></div>
+                </div>
+                <div class="login-wrapper-bottom">
+                    <ul>
+                        <li><a id="open-signup">회원가입</a></li>
+                        <li><a href="">비밀번호찾기</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        const loginopenButton = document.getElementById("open-login");
+        const loginmodal = document.querySelector(".login");
+        const loginoverlay = loginmodal.querySelector(".login_overlay");
+        const logincloseBtn = loginmodal.querySelector("button");
+        const loginopenModal = () => {
+            loginmodal.classList.remove("hidden");
+        }
+        const logincloseModal = () => {
+            loginmodal.classList.add("hidden");
+        }
+        loginoverlay.addEventListener("click", logincloseModal);
+        logincloseBtn.addEventListener("click", logincloseModal);
+        loginopenButton.addEventListener("click", loginopenModal);
+    </script>
+</body>
+
+</html>

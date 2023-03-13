@@ -1,0 +1,13 @@
+.googlebox {
+        width: 800px;
+        height: 300px;
+        border-radius: 35px;
+        padding: 10px;
+        display: none;
+        position: absolute;
+        top: 20%;
+        left: 26%;
+    }
+    .gsc-control-cse{
+        border-radius: 35px;
+   }

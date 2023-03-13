@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메인페이지</title>
+<link rel="stylesheet" href="/css/communitylist.css">
+<link rel="stylesheet" href="/css/footer.css">
+<script th:src="@{/js/jquery/jquery.min.js}"></script>
+<script src="/js/ajax/main.js"></script>
+
+
+
+</head>
+
+<body>
+	<!-- [header] 영역 시작 -->
+	<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+    <div class="content">
+        <div class="content-body">
+            <div class="today-content">
+                <div class="today-box">
+                    <div class="box-title">
+                        <h3>Top User</h3>	<!-- 탑 라이터 -> 탑커뮤니티로 수정함 -->
+                    </div>
+                       <div>
+		                    <div class="box-content">
+		                        <div class="userimg"><Strong></Strong></div>
+		                        <div class="username"><Strong>닉네임</Strong></div>
+		                        <div class="hits"><Strong>경험치</Strong></div>
+		                    </div>
+	                    </div>
+	                   <div th:each=" list1 : ${topuser}">
+		                    <div class="box-content">
+		                        <div class="userimg">
+		                        	<img th:if="${list1.exvalue} < 100" src="/img/a1.png" width="25px" height="25px">
+				                	<img th:if="${list1.exvalue} >= 100 and ${list1.exvalue} < 200" src="/img/a2.png" width="25px" height="25px">
+				                	<img th:if="${list1.exvalue} >= 200 and ${list1.exvalue} < 300" src="/img/a3.png" width="25px" height="25px">
+				                	<img th:if="${list1.exvalue} >= 300 and ${list1.exvalue} < 400" src="/img/a4.png" width="25px" height="25px">
+				                	<img th:if="${list1.exvalue} >= 400" src="/img/a5.png" width="25px" height="25px">
+		                        </div>
+		                        <div class="username"><a th:href="@{/hello/spacepage(id=${list1.id})}"><Strong class="text2">[[${list1.nickname}]]</Strong></a></div>
+		                        <div class="hits">[[${list1.exvalue}]]</div>
+		                    </div>
+	                    </div>
+                </div>
+                <div class="today-box1">
+                    <div class="box-title">
+                        <h3>Top Community</h3>	<!-- 탑 라이터 -> 탑커뮤니티로 수정함 -->
+                    </div>
+                       <div>
+		                    <div class="box-content">
+		                        <div class="username"><Strong>제목</Strong></div>
+		                        <div class="hits"><Strong>조회수</Strong></div>
+		                    </div>
+	                    </div>
+	                   <div th:each=" listchk : ${top}">
+		                    <div class="box-content">
+		                        <!-- <div class="username">[[${listchk.boardNum}]]</div> -->
+		                        <div class="username"><a th:href="@{/hello/communityread(boardNum=${listchk.boardNum})}"><Strong class="text2">[[${listchk.title}]]</Strong></a></div>
+		                        <div class="hits">[[${listchk.views}]]회</div>
+		                    </div>
+	                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="main-content">
+
+            	<!-- 게시판 상단 -->
+                <div class="content-header">
+                    <h1>커뮤니티</h1>
+                    <p>좋은 질문과 답변으로 동료의 시간을 아껴주세요</p>
+                </div>
+                <div class="content-middle">
+                    <div sec:authorize="isAuthenticated" class="content-button">
+                        <button onclick="location.href='/hello/communityregister' ">작성하기</button>
+                    </div>
+                    <div class="content-search">
+                    
+						<!-- 검색 -->
+						<div class="">
+							<form id="searchForm" action="/hello/communitylist" method="get">
+								<select name="type">
+									<option value="" th:selected="${pageRequestDTO.type==null}">-----</option>
+									<option value="t" th:selected="${pageRequestDTO.type=='t'}">제목</option>
+									<option value="c" th:selected="${pageRequestDTO.type=='c'}">내용</option>
+									<option value="w" th:selected="${pageRequestDTO.type=='w'}">닉네임</option>
+									<option value="o" th:selected="${pageRequestDTO.type=='o'}">카테고리</option>
+									<option value="tc" th:selected="${pageRequestDTO.type=='tc'}">제목
+										or 내용</option>
+									<option value="tw" th:selected="${pageRequestDTO.type=='tw'}">제목
+										or 닉네임</option>
+									<option value="TCW" th:selected="${pageRequestDTO.type=='tcw'}">제목
+										or 내용 or 닉네임</option>
+								</select> <input type="text" name="keyword"
+									th:value="${pageRequestDTO.keyword}">
+								<button type="button" class="btn btn-search">검색</button>
+								<button type="button" class="btn btn-clear">취소</button>
+								<p>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- end 게시판 상단 -->
+
+
+				<!-- 게시판 list -->
+				<div class="content-table">
+
+					<div th:each="dto : ${result.dtoList}" class="content-box">
+						<div class="box-top">
+							<!-- 유저이미지 -->
+							<div class="userimg">
+								<img th:if="${dto.memberurl == null}" src="/img/c1.png" alt="" width="20px" height="20px">
+                	 			<img th:if="${dto.memberurl != null}" width="20px" height="20px" th:src="'/hello/display?fileName='+${dto.memberurl}" >
+							</div>
+							<!-- 유저id -->
+							<div class="username">
+								<a th:href="@{/hello/spacepage(id=${dto.id})}"><Strong class="text2">[[${dto.nickname}]] </Strong></a> <small class="text2"> [[${dto.id}]]</small>
+							</div>
+							<!-- 조회수 -->
+							<div class="hits">[[${dto.views}]] 회</div>
+							<!-- 등록일 -->
+							<input type="hidden" class="content-time"
+								th:value="${#temporals.format(dto.regdate, 'yyyy/MM/dd')}">
+							<div class="updateDate">[[${#temporals.format(dto.regdate,
+								'yyyy/MM/dd')}]]</div>
+						</div>
+						<div class="box-middle">
+							<!-- title -->
+							<div class="content-title">
+								<a class="text1" 
+									th:href="@{/hello/communityread(boardNum=${dto.boardNum},
+                               page=${result.page},
+                               type=${pageRequestDTO.type},
+							   keyword=${pageRequestDTO.keyword}
+                               )}">[[${dto.title}]]</a>
+							</div>
+						</div>
+						<div class="box-bottom">
+							<!-- 카테고리 -->
+							<div class="category">카테고리</div>
+							<div class="category-box">#[[${dto.tag}]]</div>
+							<div class="box-right1">
+								<!-- 추천수 -->
+								<div>
+									<img src="/img/like.png" alt="" width="20px">
+								</div>
+								<div class="box">[[${dto.blikes}]]</div>
+								<!-- 댓글수 -->
+								<div class="box">
+									<img src="/img/message.png" alt="" width="25px">
+								</div>
+								<div class="box">[[${dto.cnt}]]</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- end 게시판 list -->
+
+			<div class="page_wrap">
+				<ul class=" page_nation">
+					<li class="arrow prev" th:if="${result.prev}"><a
+						class="page-link"
+						th:href="@{/hello/communitylist(page=${result.start-1},
+											type=${pageRequestDTO.type},
+											keyword=${pageRequestDTO.keyword}
+							)}"
+						tabindex="-1">이전</a></li>
+					<li th:class="'page-item ' " th:each="page: ${result.pageList}"><a
+						th:class="'page-link ' + ${result.page == page?'active':''}"
+						th:href="@{/hello/communitylist(page=${page},
+											type=${pageRequestDTO.type},
+											keyword=${pageRequestDTO.keyword}
+						)}">[[${page}]]</a>
+					<li class="page-item" th:if="${result.next}"><a
+						class="page-link"
+						th:href="@{/hello/communitylist(page=${result.end},
+											type=${pageRequestDTO.type},
+											keyword=${pageRequestDTO.keyword}
+						)}">다음</a>
+					</li>
+				</ul>
+			</div>
+
+
+
+		</div>
+
+	</div>
+
+
+
+
+	<div class="googlebox">
+		<div class="gcse-search"></div>
+	</div>
+	<footer th:replace="fragments/footer :: footerFragment"></footer>
+
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script async src="https://cse.google.com/cse.js?cx=e053556a1d0bc4606"></script>
+</body>
+<script th:inline="javascript">
+	var searchForm = $("#searchForm");
+
+	$('.btn-search').click(function(e) {
+
+		searchForm.submit();
+	});
+
+	$('.btn-clear').click(function(e) {
+
+		searchForm.empty().submit();
+	});
+	
+	//글자수 표시 제한 걸기
+	
+		function truncateText2() {
+  var elements = document.getElementsByClassName("text2");
+  for (var i = 0; i < elements.length; i++) {
+    var html = elements[i].innerHTML.trim();
+    if (html.length > 8) {
+      html = html.substr(0, 8) + "...";
+      elements[i].innerHTML = html;
+    }
+  }
+}
+	
+	
+	function truncateText() {
+  var elements = document.getElementsByClassName("text1");
+  for (var i = 0; i < elements.length; i++) {
+    var html = elements[i].innerHTML.trim();
+    if (html.length > 30) {
+      html = html.substr(0, 30) + "...";
+      elements[i].innerHTML = html;
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  truncateText();
+  truncateText2();
+});
+</script>
+
+
+</html>

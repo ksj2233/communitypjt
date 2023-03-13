@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/qnalist.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <script th:src="@{/js/jquery/jquery.min.js}"></script>
+</head>
+
+<body>
+    <!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+    <div class="content-header">
+        <div class="content-header-box">
+            <h1>Q&A</h1>
+            <div class="search">
+            <form id="searchForm" action="/hello/qnalist" method="get">
+                <select name="type">
+                    <option value="" 
+		                    	th:selected="${pageRequestDTO.type==null}"
+		                    		>-----</option>
+		                    <option value="t" 
+		                      	th:selected="${pageRequestDTO.type=='t'}"
+		                      		>제목</option>
+		                    <option value="c"
+		                     	th:selected="${pageRequestDTO.type=='c'}"
+		                     		>내용</option>
+		                    <option value="w"
+		                      	th:selected="${pageRequestDTO.type=='w'}"
+		                       		>작성자</option>
+		                    <option value="o"
+		                      	th:selected="${pageRequestDTO.type=='o'}"
+		                       		>카테고리</option>
+		                    <option value="tc"
+		                      th:selected="${pageRequestDTO.type=='tc'}"
+		                       		>제목 or 내용</option>
+		                    <option value="tw"
+		                      th:selected="${pageRequestDTO.type=='tw'}"
+		                       		>제목 or 작성자</option>
+                </select>
+                <input type="text" name="keyword" th:value="${pageRequestDTO.keyword}">
+                <button type="button" class="btn btn-search">검색</button>
+            </form>
+            </div>
+            <button id="registration" onclick="location.href='/hello/qnaregister' ">작성하기</button>
+        </div>
+    </div>
+    
+    <!-- 게시판 list -->
+  	<div class="content-body">
+        <div th:each="dto : ${result.dtoList}" class="board">
+            <div class="board-top">
+                <div class="board-title">
+                <a class="text1" th:href="@{/hello/qnaread(boardNum=${dto.boardNum},
+                               page=${result.page},
+                               type=${pageRequestDTO.type},
+							   keyword=${pageRequestDTO.keyword}
+                               )}">[[${dto.title}]]
+                    </a></div>
+            </div>
+            <div class="board-text">
+            	<!-- 유저이미지 -->
+				<div class="userimg">
+					<img th:if="${dto.memberurl == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+                	<img th:if="${dto.memberurl != null}" width="30px" height="30px" th:src="'/hello/display?fileName='+${dto.memberurl}" >
+				</div>
+				<!-- 유저id -->
+				<div class="username">
+					<a th:href="@{/hello/spacepage(id=${dto.id})}"><Strong>[[${dto.nickname}]] </Strong></a>
+				</div>
+				<div class="rightbox">
+				<!-- 좋아요 -->
+					<div class="box1">
+						<img src="/img/like.png" alt="" width="20px">
+						
+					</div>
+					<div class="box1p">
+					<p>[[${dto.blikes}]]</p>
+					</div>
+				<!-- 댓글수 -->
+					<div class="box2">
+						<img src="/img/message.png" alt="" width="25px">
+						
+					</div>
+					<div class="box2p">
+					<p >[[${dto.cnt}]]</p>
+					</div>
+				<!-- 조회수 -->
+               	 	<div class="board-view"><p >[[${dto.views}]] 회</p ></div>
+                <!-- 등록일 -->
+                	<div class="board-time"><p >[[${#temporals.format(dto.regdate, 'yyyy/MM/dd')}]]</p ></div>
+            	</div>
+            </div>
+        </div> 
+  
+        <!-- end 게시판 list -->
+        
+        
+        
+        <div class="page_wrap">
+		<ul class=" page_nation">
+			<li class="arrow prev" th:if="${result.prev}">
+				<a class="page-link" 
+					th:href="@{/hello/qnalist(page=${result.start-1},
+									type=${pageRequestDTO.type},
+									keyword=${pageRequestDTO.keyword}
+					)}" tabindex="-1">이전</a>
+			</li>
+			<li th:class="'page-item ' "
+			th:each="page: ${result.pageList}"><a th:class="'page-link ' + ${result.page == page?'active':''}" 
+				th:href="@{/hello/qnalist(page=${page},
+									type=${pageRequestDTO.type},
+									keyword=${pageRequestDTO.keyword}
+				)}">[[${page}]]</a>
+				
+				
+			
+			
+			<li class="page-item" th:if="${result.next}">
+				<a class="page-link" 
+				th:href="@{/hello/qnalist(page=${result.end},
+									type=${pageRequestDTO.type},
+									keyword=${pageRequestDTO.keyword}
+				)}">다음</a>
+			</li>			
+		</ul>
+		</div>
+        
+        
+    </div>
+    <footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+<script th:inline="javascript">
+
+			var searchForm = $("#searchForm");
+			
+			$('.btn-search').click(function(e){
+				
+				searchForm.submit();
+			});
+			
+			$('.btn-clear').click(function(e){
+				
+				searchForm.empty().submit();
+			});
+			
+	//글자수 표시 제한 걸기
+			
+			
+			function truncateText() {
+		  var elements = document.getElementsByClassName("text1");
+		  for (var i = 0; i < elements.length; i++) {
+		    var html = elements[i].innerHTML.trim();
+		    if (html.length > 13) {
+		      html = html.substr(0, 13) + "...";
+		      elements[i].innerHTML = html;
+		    }
+		  }
+		}
+
+		document.addEventListener("DOMContentLoaded", function(event) {
+		  truncateText();
+		});
+			
+</script>
+
+
+</html>

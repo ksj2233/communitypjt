@@ -1,0 +1,124 @@
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+    /*모달창 로그인*/
+.login {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.login_content {
+    background-color: white;
+    position: relative;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.login_content button{
+    float: right;
+    background-color: white;
+    color: steelblue;
+    padding: 5px 20px;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+}
+
+.aaa {
+    display: none;
+}
+
+.login-wrapper {
+    width: 400px;
+    height: 360px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+}
+
+.login-wrapper h2 {
+    font-size: 24px;
+    color: #a54b16;
+    margin-bottom: 20px;
+}
+
+#login-form input {
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+}
+
+#login-form input::placeholder {
+    color: #D2D2D2;
+}
+
+#login-form input[type="submit"] {
+    color: #fff;
+    font-size: 16px;
+    background-color: #a54b16;
+    margin-top: 20px;
+}
+
+#login-form input[type="submit"]:hover {
+    background-color: #632b0a;
+}
+
+.login-api{
+    width: 100%;
+    height: 40px;
+}
+.login-api .kakaoimg{
+    margin-right: 5px;
+}
+
+
+.login-wrapper .login-wrapper-bottom{
+    width: 90%;
+    height: 30px;
+    margin-top: 15px;
+    margin-left: 45px;
+}
+.login-wrapper .login-wrapper-bottom ul{
+    width: 250px;
+    height: 30px;
+    margin: auto;
+}
+.login-wrapper .login-wrapper-bottom ul li{
+    float: left;
+    margin: 0 10px;
+}
+.login-wrapper .login-wrapper-bottom ul li a{
+    color: black;
+}

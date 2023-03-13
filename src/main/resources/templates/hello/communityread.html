@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="/css/communityread.css">
+	<link rel="stylesheet" href="/css/footer.css">
+	<link rel="stylesheet" href="/css/qnamodal.css">
+	<script th:src="@{/js/jquery/jquery.min.js}"></script>
+</head>
+
+<body>
+	<!-- [header] 영역 시작 -->
+	<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+    <div class="content-header">
+        <div class="content-header-box">
+            <h1 class="listBtn">커뮤니티</h1>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="box-top">
+            <div class="box-left">
+                <div class="userimg">
+                    <img th:if="${dto.memberurl == null}" src="/img/c1.png" alt="" width="40px" height="40px">
+                	<img th:if="${dto.memberurl != null}" width="40px" height="40px" th:src="'/hello/display?fileName='+${dto.memberurl}" >
+                </div>
+
+
+
+                <!-- 유저id -->
+                <div class="username">
+                	<a th:href="@{/hello/spacepage(id=${dto.id})}"><Strong>[[${dto.nickname}]] </Strong></a>
+                </div>
+
+                <!-- tag -->
+                <div class="category">
+                    <p>[[${dto.tag}]]</p>
+                </div>
+            </div>
+            <div class="box-right">
+                <div class="urlimg"><img src="/img/url.svg" alt="" width="30px" height="30px"></div>
+                <div class="blikesBtnOpen"><img src="/img/like.svg" alt="" width="30px" height="30px"></div>
+                <div class="report"><img src="/img/siren.png" alt="" width="30px" height="30px"></div>
+            </div>
+        </div>
+        <div class="box-title">
+            <div>
+            	<!-- title -->
+                <div class="box-left">
+                    <div class="title">
+                        <h3>[[${dto.title}]]</h3>
+                    </div>
+                </div>
+                <!-- 수정&삭제 버튼 -->
+                <div sec:authorize="isAuthenticated" class="box-right" th:if="${dto.id} == ${member.id}">
+	                <!-- 수정버튼 -->
+                    <div class="modify-button">
+                    	<a th:href="@{/hello/communitymodify(boardNum=${dto.boardNum}, page=${requestDTO.page},
+									type=${requestDTO.type},
+									keyword=${requestDTO.keyword}	)}">
+							<button type="button">수정</button>
+						</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+		<!-- 내용 -->
+		<div class="box-content">
+			<div>
+				<p>[[${dto.content}]]</p>
+			</div>
+		</div>
+	</div>
+	<div sec:authorize="isAuthenticated">
+		<input type="hidden" name="likeboardNum" th:value="${dto.boardNum}">
+		<input type="hidden" name="likememberNum" th:value="${member.memberNum}">
+	</div>
+	<hr>
+	<div class="content-comments">
+		<div class="box-top">
+
+        	<!-- 댓글 cnt -->
+            <div class="box-left">
+                <p>댓글 수 : [[${dto.cnt}]]개</p>
+            </div>
+
+            <!-- list 이동 버튼 -->
+        </div>
+
+        <!-- 댓글 쓰기 -->
+
+        <form>
+	        <input type="hidden" name="page" th:value="${requestDTO.page}">
+			<input type="hidden" name="type" th:value="${requestDTO.type}">
+			<input type="hidden" name="keyword" th:value="${requestDTO.keyword}">
+        <div class="box-write" sec:authorize="isAuthenticated">
+            <div class="box-write-top">
+                <div class="box-left">
+                    <div class="userimg">
+                        <img th:if="${member.url == null}" src="/img/c1.png" alt="" width="40px" height="40px">
+                		<img th:if="${member.url != null}" width="40px" height="40px" th:src="'/hello/display?fileName='+${member.url}" >
+                    </div>
+                    <!-- 유저 -->
+                    <div class="username">
+                        <p>[[${member.nickname}]]  <small>[[${member.id}]]</small></p>
+                        <input type="hidden" name="commenterNum" th:value="${member.memberNum}">
+
+                    </div>
+                </div>
+                <div class="box-right">
+                    <div>
+                    	<button type="button" class="commentSaveBnt">댓글 쓰기</button>
+                    	<button type="button" class="cModifyBnt">댓글 수정</button>
+                    	<button type="button" class="cCancelBnt">취소</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-write-bottom">
+            	<!-- 댓글 입력란 -->
+                <div class="comment-box">
+                    <p><textarea cols="150" rows="5" name="commentContent"></textarea></p>
+                </div>
+            	<!-- end 댓글 입력란 -->
+            </div>
+        </div>
+        </form>
+        <!-- end 댓글 쓰기 -->
+
+        <!-- 댓글 -->
+        <div class="commentList"></div>
+        <div sec:authorize="!isAuthenticated" style="text-align:center">
+        	<br><br><a href="/hello/login">로그인</a> 후 댓글을 보실 수 있습니다.<br><br><br><br><br><br><br><br>
+        </div>
+        <!-- end 댓글 -->
+
+
+    <!--모달-->
+    <div id="myModal" class="modal call hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close">&times;</span>
+            <input class="form-control" type="text" name="modalMember" readonly>
+          </div>
+          <div class="modal-body">
+            <div class="box" >
+				<textarea class="form-control" type="text" name="modalText" placeholder="Reply text..." cols="18" rows="24"></textarea>
+            </div>
+            <!-- Add more content as needed -->
+          </div>
+		<div class="modal-footer">
+			<input type="hidden" name="mBoardCommentNum">
+			<input type="hidden" name="mCommenterNum">
+			<input type="hidden" name="mClikes">
+			<button type="button" class="btn btn-warning replyModify">수정</button>
+			<button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">취소</button>
+		</div>
+
+
+
+        </div>
+      </div>
+
+
+    </div>
+    <footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+
+<script th:inline="javascript">
+	$(document).ready(function () {
+
+
+		let modal = $(".call")
+
+		const boardNum = [[${ dto.boardNum }]];
+
+
+		$(".cModifyBnt").hide();
+		$(".cCancelBnt").hide();
+
+		function getComment() {
+			$.getJSON('/comment/' + boardNum + "/all", function (arr) {
+				let str = "";
+
+				$.each(arr, function (idx, comment) {
+
+					const mem = $("input[name='commenterNum']").val();
+
+					console.log("mem?" + mem)
+					console.log("comment.commenterNum?" + comment.commenterNum)
+					var add;
+					if (comment.commenterNum == mem) {
+						add = "show";
+					} else {
+						add = "hide";
+					}
+				 var picUrl = '/hello/display?fileName=' + comment.memUrl;
+                 if (picUrl == '/hello/display?fileName='+null)
+                 {picUrl = '/img/c1.png';}
+
+				console.log("결과값은?" + add)
+
+				console.log(comment);
+				str += ' <div class="box-write" data-boardCommentNum="'+ comment.boardCommentNum + '">';
+				str += ' 	<div class="box-write-top"> ';
+				str += ' 		<div class="box-left"> ';
+				str += ' 			<div class="userimg">';
+				str += ' 				<div class="userimg"><img src="' + picUrl + '" alt="" width="40px" height="40px"></div> ';
+				str += '			</div> ';
+				str += ' 			<div class="username"><a href="/hello/spacepage?id='+ comment.id +'"><Strong>' +comment.nickname+' </Strong></a> <small> '+ comment.id +'</small> <small class="commentUpdateDate">'+ displayTime(comment.regdate) + ' </small> 좋아요 :'+ comment.clikes +' 회 ';
+				//str += ' 				<div class="clikes"> 추천수 :'+ comment.clikes +' 회  </div> ';
+				str += '			</div>';
+				str += '		</div>';
+				str += '		<div class="box-right">';
+				str += ' 			<button type="button" class="commentModifyBtn ' + add;
+				str += '			" data-boardCommentNum="'+ comment.boardCommentNum +'" data-commenterNum="'+ comment.commenterNum+'"';
+				str += '			data-clikes="' + comment.clikes +'" data-commentContent="'+ comment.commentContent +'" data-nickname="'+ comment.nickname +'"';
+				str += '			>수정</button>';
+				str += ' 			<button type="button" class="commentRemoveBtn ' + add + '" data-boardCommentNum="'+ comment.boardCommentNum +'">삭제</button>';
+				str += '			<button data-boardCommentNum="'+ comment.boardCommentNum + '" type="button"  class="clikesBtnOpen">좋아요</button>';
+				str += '		</div>';
+				str += '	</div> ';
+				str += ' 	<div class="box-write-bottom"> ';
+				str += ' 		<div class="comment-box">'+ comment.commentContent +'</div>';
+				str += '	</div> ';
+				str += ' 	<div class="box-button"></div> ';
+				str += ' </div>';
+
+
+			})
+
+	$(".commentList").html(str);
+	$(".commentModifyBtn").hide();
+	$(".commentRemoveBtn").hide();
+	$(".show").show();
+		})
+	}
+
+	getComment();
+	$(".show").show();
+
+	$(".boardprevBtn").click(function(){
+
+
+		alert("작동?");
+		$(".show").show();
+
+		const urlParams = new URL(location.href).searchParams;
+
+			const name = urlParams.get('memberNum');
+
+			console.log("결과값은?" + name)
+
+
+
+		});
+
+		var actionForm = $("form");
+		$(".listBtn").click(function () {
+			var pageInfo = $("input[name='page']");
+			var type = $("input[name='page']");
+			var keyword = $("input[name='keyword']");
+
+			actionForm.empty();
+			actionForm.append(pageInfo);
+			actionForm.append(type);
+			actionForm.append(keyword);
+			actionForm.attr("action", "/hello/communitylist")
+				.attr("method", "GET");
+
+			actionForm.submit();
+		});
+
+
+
+		$(".commentSaveBnt").click(function () {
+
+			var comment = {
+				boardNum: boardNum,
+				commentContent: $('textarea[name="commentContent"]').val(),
+				commenterNum: $('input[name="commenterNum"]').val()
+			}
+			console.log(comment);
+
+			$.ajax({
+				url: '/comment/' + boardNum,
+				type: 'post',
+				data: JSON.stringify(comment),
+				contentType: "application/json; charset=utf-8",
+				dataType: 'text',
+				success: function (result) {
+					console.log("success result : " + result);
+					self.location.reload();
+					alert("댓글이 등록되었습니다.");
+					getComment();
+				}
+			}); // ajax 끝
+		}); //commentSaveBnt 끝
+
+		var inputText = $("input[name='text']");
+
+		//$('.cModifyBnt').click(function(){
+
+		$(document).on("click", ".commentModifyBtn", function () {
+
+
+			$(".call").show();
+
+			$('input[name="modalMember"]').val($(this).data("nickname"));
+			$('input[name="modalText"]').val($(this).data("commentcontent"));
+			$("input[name='mBoardCommentNum']").val($(this).data("boardcommentnum"));
+			$("input[name='mCommenterNum']").val($(this).data("commenternum"));
+			$("input[name='mClikes']").val($(this).data("clikes"));
+
+		});
+
+
+		$('.replyModify').click(function () {
+
+			var boardCommentNum = $("input[name='mBoardCommentNum']").val();
+			var comment = {
+				boardCommentNum: boardCommentNum,
+				boardNum: boardNum,
+				commentContent: $('input[name="modalText"]').val(),
+				commenterNum: $("input[name='mCommenterNum']").val(),
+				clikes: $("input[name='mClikes']").val()
+			};
+
+			console.log(comment);
+
+			$.ajax({
+				url: '/comment/' + boardCommentNum,
+				method: 'put',
+				data: JSON.stringify(comment),
+				contentType: 'application/json; charset=utf-8',
+				success: function (result) {
+					console.log("result : " + result);
+					if (result === 'success') {
+						alert("뎃글이 수정되었습니다.");
+						$(".call").hide();
+						getComment();
+					}
+				}
+			});
+		});
+
+
+		$(document).on("click", ".commentRemoveBtn", function () {
+
+			var boardCommentNum = $(this).data("boardcommentnum");
+
+			$.ajax({
+				url: '/comment/' + boardCommentNum,
+				method: 'delete',
+				success: function (result) {
+					console.log("result : " + result);
+					if (result === 'success') {
+						alert("뎃글이 삭제되었습니다.");
+						$(".call").hide();
+						getComment();
+					}
+				}
+			});
+
+		});
+
+
+
+		// board 좋아요 처리
+		// blikesBtnOpen
+		$(".blikesBtnOpen").click(function () {
+
+			var like = {
+				boardNum: boardNum,
+				memberNum: $('input[name="likememberNum"]').val()
+			};
+			console.log(like);
+
+			$.ajax({
+				url: '/like/' + boardNum,
+				type: 'post',
+				data: JSON.stringify(like),
+				contentType: "application/json; charset=utf-8",
+				dataType: 'text',
+				success: function (result) {
+					console.log("success result : " + result);
+					self.location.reload();
+
+				}
+			}); // ajax 끝
+		}); //blikesBtnOpen 끝
+
+
+		// comment 좋아요 처리
+		//clikesBtnOpen
+		$(document).on("click", ".clikesBtnOpen", function () {
+
+			var commentid = $(this).data("boardcommentnum");
+			console.log(commentid);
+			console.log("boardNum : " + boardNum);
+
+			var like = {
+				commentid: commentid,
+				memberNum: $('input[name="likememberNum"]').val()
+			};
+			console.log(like);
+
+			$.ajax({
+				url: '/like/' + commentid + '/all',
+				type: 'post',
+				data: JSON.stringify(like),
+				contentType: "application/json; charset=utf-8",
+				dataType: 'text',
+				success: function (result) {
+					console.log("success result : " + result);
+					self.location.reload();
+
+				}
+			}); // ajax 끝
+		}); //clikesBtnOpen 끝
+
+
+
+		/* 시간 처리 */
+		function displayTime(timeValue) {
+			var today = new Date(); // 현재 시간
+			var date = new Date(timeValue).getTime();
+			var gap = today.getTime() - date;
+			var dateObj = new Date(timeValue);
+			var str = "";
+
+
+			console.log(date);
+			console.log(today.getTime());
+			console.log(gap);
+
+
+
+			if (gap < (1000 * 60 * 60 * 24)) {
+
+				// comment 시간
+				var hh = dateObj.getHours();
+				var mi = dateObj.getMinutes();
+				var ss = dateObj.getSeconds();
+
+				// 현재 시간
+				var rhh = today.getHours();
+				var rmi = today.getMinutes();
+				var rss = today.getSeconds();
+
+				// 표시 예) 1시간 전 or 10분 전
+
+				if (rhh > hh) {
+					return [(rhh - hh > 9 ? '' : '0') + rhh - hh, '시간 전'].join('');
+				} else {
+					return [(rmi - mi > 9 ? '' : '0') + rmi - mi, '분 전'].join('');
+				}
+			} else {
+				var yy = dateObj.getFullYear();
+				var mm = dateObj.getMonth() + 1;
+				var dd = dateObj.getDate();
+
+				return [yy, '/', (mm > 9 ? '' : '0') + mm, '/',
+					(dd > 9 ? '' : '0') + dd].join('');
+			}
+		}
+		/* 시간 처리 끝 */
+
+		/* URL 복사 기능 */
+		$(".urlimg").on("click", function () {
+
+			var url = '';
+			var textarea = document.createElement("textarea");
+			document.body.appendChild(textarea);
+			url = window.document.location.href;
+			textarea.value = url;
+			textarea.select();
+			document.execCommand("copy");
+			document.body.removeChild(textarea);
+			alert("URL이 복사되었습니다.")
+
+		})
+		/* END URL 복사 기능 */
+
+
+
+
+
+
+
+	});
+
+	$(".close").on("click", function () {
+		$(".call").hide();
+	});
+	var modal1 = $(".call");
+	$(window).click(function (event) {
+		if (event.target == modal1[0]) {
+			modal1.css("display", "none");
+		}
+	});
+
+</script>
+
+
+
+</html>

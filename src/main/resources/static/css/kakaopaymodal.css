@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&display=swap');
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    width: 330px;
+}
+
+/* The Close Button */
+.close {
+    color: #000000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    text-align: center;
+}
+
+.modal-header {
+    width: 100%;
+    height: 150px;
+    border-radius: 5px;
+    box-shadow: 0 2px 30px rgba(black, .2);
+    background: lighten(#f0f4c3, 10%);
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .wave {
+    opacity: .4;
+    position: absolute;
+    top: 3%;
+    left: 50%;
+    background: rgb(253, 228, 4);
+    width: 500px;
+    height: 500px;
+    margin-left: -250px;
+    margin-top: -400px;
+    transform-origin: 50% 48%;
+    border-radius: 43%;
+    animation: drift 3000ms infinite linear;
+    
+  }
+  
+  .wave.-three {
+    animation: drift 5000ms infinite linear;
+  }
+  
+  .wave.-two {
+    animation: drift 7000ms infinite linear;
+    opacity: .1;
+    background: yellow;
+  }
+  
+  .box:after {
+    content: '';
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(#e8a, 1), rgba(#def, 0) 80%, rgba(white, .5));
+    z-index: 11;
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .title {
+    width: 200px;
+    height: 50px;
+
+    z-index: 20;
+    text-align: center;
+    transform: translate3d(0, 0, 0);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: .4em;
+    font-size: 22px;
+    text-shadow: 0 1px 0 rgba(black, .1);
+    text-indent: .3em;
+    margin: auto;
+    margin-top: 20px;
+  }
+  @keyframes drift {
+    from { transform: rotate(0deg); }
+    from { transform: rotate(360deg); }
+  }
+
+
+
+.modal-body {
+    height: 280px;
+    /* Set a fixed height */
+    width: 330px;
+    /* Add scrollbar */
+}
+.modal div p{
+    text-align: center;
+    height: 25px;
+    font-weight: 600;
+}
+.modal div .box{
+    max-width: 280px;
+    margin: auto;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-flow: row wrap;
+}
+.modal div .box label{
+    display: inline-block;
+    padding: 0 5px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 2rem;
+    flex: 0 0 30%;
+    margin: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.out{
+	border: 1px solid #d0d0d0;
+}
+
+.price-text {
+	font-size: 15px;
+}
+
+.button-box{
+    margin: auto;
+    width: 300px;
+}
+.button-box button{
+    width: 300px;
+    padding: 10px 0;
+    border-radius: 15px;
+    background-color: #C64545;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    border: none;
+    margin: auto;
+}
+
+.radio-all{
+	display: none;
+}
+
+.box-radio-input:hover{
+	background-color: #fde404;
+}
+
+.yellow-background{
+	background-color: #fde404;
+}
+

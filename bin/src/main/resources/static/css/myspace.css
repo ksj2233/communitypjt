@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap');
+
+
+*{
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+body{
+    font-size: 14px;
+    font-family: 'Gowun Batang', serif;
+    background-color: #f3f4f5;
+}
+
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+/*상단 바*/
+.innerHeader {
+    max-width: 1920px;
+    height: 30px;
+    line-height: 30px;
+    margin: auto;
+    background-color: rgb(34, 34, 34);
+}
+
+.innerHeader .logo {
+    float: left;
+}
+
+.innerHeader .logo a {
+    display: block;
+    padding-left: 10px;
+}
+
+/*상단 바 왼쪽*/
+.innerHeader .mainmenu-left {
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-left .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-left .navbar li {
+    float: left;
+    margin: 2px 15px;
+}
+
+.innerHeader .mainmenu-left .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    font-weight: bolder;
+}
+
+.innerHeader .mainmenu-left .navbar li a:hover {
+    font-size: 14px;
+}
+
+/*상단 바 오른쪽*/
+.innerHeader .mainmenu-right {
+    float: right;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-right .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 2px 15px;
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+.innerHeader .mainmenu-right .navbar li a:hover {
+    font-size: 14px;
+}
+
+.innerHeader .mainmenu-right .navbar li img {
+    display: block;
+    margin: 2px 10px 0px;
+}
+
+
+.subnavbar{
+    padding-top: 10px;
+    width: 1200px;
+    height: 50px;
+   
+    margin: auto;
+    margin-top: 20px;
+}
+.subnavbar div{
+    width: 200px;
+    height: 50px;
+   
+    float: left;
+}
+.subnavbar .box1{
+    margin-left: 300px;
+}
+.subnavbar div h1{
+    text-align: center;
+    font-size: 30px;
+    color: rgb(19, 165, 165);
+}
+.subnavbar .box2{
+    float: right;
+    width: 100px;
+}
+.subnavbar .box3{
+    float: right;
+    width: 100px;
+    margin-right: 10px;
+}
+.subnavbar div h4{
+    text-align: center;
+    margin-top: 10px;
+}
+.subnavbar ul{
+    float: left;
+}
+.subnavbar ul li{
+    float: left;
+    margin-right: 10px;
+}
+.subnavbar ul .user-img{
+    margin-top: 5px;
+    background-color: black;
+    border-radius: 50%;
+}
+.subnavbar ul .star{
+    margin-top: 7px;
+}
+.subnavbar ul .text{
+    margin-top: 13px;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+
+.line{
+    margin-top: 20px;
+    max-width: 1920px;
+    height: 2px;
+    background-color: rgb(226, 225, 225);
+}
+.content{
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    max-height: 2000px;
+    border: 2px solid rgb(19, 165, 165);
+    margin-bottom: 100px;
+}
+.content .div-content{
+    max-width: 1320px;
+    height: 250px;
+    border-bottom: 1px solid #e2e3e4;
+}
+.content div h1{
+    margin-left: 50px;
+    margin-top: 20px;
+    font-size: 20px;
+}
+.content .div-content .content-introduce{
+    border: 1px solid #a3a3a3;
+    border-radius: 15px;
+    width: 900px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.content .div-content .content-introduce .introduce-button{
+    width: 70px;
+    height: 30px;
+    float: right;
+    margin-top: 15px;
+    margin-right: 15px;
+}
+.content .div-content .content-introduce .introduce-button button{
+    border: 1px solid rgb(138, 138, 138);
+    border-radius: 5px;
+    background-color: #cfcfcf;
+    padding: 1px 2px;
+}
+.content .div-content .content-board{
+    border: 1px solid #a3a3a3;
+    border-radius: 15px;
+    width: 900px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.content .div-content .content-chat{
+    border: 1px solid #a3a3a3;
+    border-radius: 15px;
+    width: 900px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/register.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+    <form th:action="@{/hello/communityregister}" th:method="POST" class="content-body">
+        <div class="text">
+            <p>제목</p>
+        </div>
+        <div class="content">
+            <input type="text" name="title" id="mustTitle">
+        </div>
+        <div class="text">
+            <p>태그</p>
+        </div>
+        <div class="content">
+            <input type="text" name="tag" id="">
+        </div>
+        <div class="text">
+            <p>본문</p>
+        </div>
+        <div class="maincontent">
+ <!--           <input type="text" name="content" cols="127" rows="20" >-->
+             <textarea name="content" cols="127" rows="20" id="mustContent"></textarea> 
+        </div>
+        <input type="hidden" name="boardcase" value="1">
+        <input type="hidden" name="memberNum" th:value="${member.memberNum}">
+        <div class="button">
+            <div><button onclick="location.href='board.html' ">취소</button></div>
+            <div class="postbutton"><button type= "submit" id="reqCheck">등록</button></div>
+        </div>
+    </form>
+    <footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+
+<script>
+	// 제목,본문 공백 및 최대 글자수 체크 후 수정
+	$("#reqCheck").click(function () {
+		if (($("#mustTitle").val() == '') || ($("#mustTitle").val().length > 90)) {
+			alert("제목이 비어있거나 너무 깁니다.");
+			return false;
+		} else if (($("#mustContent").val() == '') || ($("#mustContent").val().length > 2990)) {
+			alert("본문이 비어있거나 너무 깁니다.");
+			return false;
+		} else {
+			if (!confirm("등록하시겠습니까?")) {
+				return;
+			}
+			$("#regForm").submit();
+		}
+	});
+</script>
+
+</html>

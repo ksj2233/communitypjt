@@ -1,0 +1,397 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+body{
+    background-color: #f4faf5;
+    font-family: 'Gowun Batang', serif;
+
+}
+
+/*상단 바*/
+.innerHeader{
+    max-width: 1720px;
+    height: 30px;
+    line-height: 30px;
+    margin: auto;
+    background-color: rgb(34, 34, 34);
+}
+.innerHeader .logo{
+    float: left;
+}
+.innerHeader .logo a{
+    display: block;
+    padding-left: 10px; 
+}
+/*상단 바 왼쪽*/
+.innerHeader .mainmenu-left {
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-left .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-left .navbar li {
+    float: left;
+    margin: 2px 15px;
+}
+
+.innerHeader .mainmenu-left .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    font-weight: bolder;
+}
+
+.innerHeader .mainmenu-left .navbar li a:hover {
+    font-size: 14px;
+}
+
+/*상단 바 오른쪽*/
+.innerHeader .mainmenu-right {
+    float: right;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-right .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 2px 15px;
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+.innerHeader .mainmenu-right .navbar li a:hover {
+    font-size: 14px;
+}
+
+.innerHeader .mainmenu-right .navbar li img {
+    display: block;
+    margin: 2px 10px 0px;
+}
+
+/*content-header*/
+.content-header{
+    padding-top: 10px;
+    border-bottom: 1px solid rgb(100,100,100);
+    max-width: 1920px;
+    height: 120px;
+}
+.content-header .content-header-box{
+    width: 1500px;
+    height: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+}
+.content-header .content-header-box h1{
+    float: left;
+    font-size: 40px;
+    margin-left: 650px;
+    color: #079645;
+    font-size: 50px;
+}
+
+.content-header .content-header-box #registration{
+    float: left;
+    width: 60px;
+    height: 22px;
+    border: 1px solid black;
+    background: #1b5ac2;
+    color: #fff;
+    margin-top: 25px;
+    margin-left: 450px;
+    font-size: 8px;
+}
+.content-header .content-header-box #registration a{
+    color: white;
+}
+
+.content-body{
+    margin-top: 100px;
+    max-width: 1920px;
+}
+.content-body .box-top{
+    width: 1200px;
+    height: 50px;
+    border-top: 1px solid rgb(100, 100, 100);
+    border-bottom: 1px solid rgb(100, 100, 100);
+
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-body .box-top .box-left{
+    width: 300px;
+    height: 50px;
+    
+    float: left;
+}
+.content-body .box-top .box-left .userimg{
+    width: 40px;
+    height: 40px;
+    
+    float: left;
+    margin-top: 5px;
+}
+.content-body .box-top .box-left .username{
+    width: 100px;
+    height: 30px;
+    
+    float: left;
+    margin-top: 15px;
+}
+.content-body .box-top .box-left .username p{
+    text-align: center;
+}
+.content-body .box-top .box-left .category{
+    width: 150px;
+    height: 30px;
+    
+    float: left;
+    margin-top: 15px;
+}
+.content-body .box-top .box-left .category p{
+    text-align: center;
+}
+.content-body .box-top .box-right{
+    width: 220px;
+    height: 50px;
+    
+    float: right;
+}
+.content-body .box-top .box-right div{
+    width: 30px;
+    height: 30px;
+    
+    float: left;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.content-body .box-title{
+    width: 1200px;
+    height: 50px;
+    border-top: 1px solid rgb(100, 100, 100);
+    border-bottom: 1px solid rgb(100, 100, 100);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+.content-body .box-title .box-left{
+    width: 300px;
+    height: 50px;
+    
+    float: left;
+}
+.content-body .box-title .box-left h1{
+    text-align: center;
+}
+.content-body .box-title .box-right{
+    width: 180px;
+    height: 50px;
+    
+    float: right;
+}
+.content-body .box-title .box-right button{
+    float: left;
+    width: 77px;
+    height: 30px;
+    border: 1px solid rgb(100, 100, 100);
+    margin-top: 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+.content-body .box-content{
+    width: 1200px;
+    height: 600px;
+    border: 1px solid rgb(100, 100, 100);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+.content-body .box-content div{
+    width: 1100px;
+    height: 550px;
+   
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+hr{
+    margin-top: 10px;
+    width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-comments{
+    margin-top: 20px;
+    max-width: 1920px;
+
+}
+.content-comments .box-top{
+    width: 1200px;
+    height: 30px;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+.content-comments .box-top .box-left{
+    margin-left: 60px;
+    width: 200px;
+    height: 30px;
+    
+    float: left;
+}
+.content-comments .box-top .box-button{
+    width: 186px;
+    height: 30px;
+    
+    float: left;
+    margin-left: 230px;
+}
+.content-comments .box-top .box-button div{
+    width: 50px;
+    height: 30px;
+    
+    float: left;
+    margin-left: 10px;
+}
+.content-comments .box-top .box-button div button{
+    width: 50px;
+}
+.content-comments .box-write{
+    width: 1200px;
+    height: 150px;
+    border: 1px solid rgb(100, 100, 100);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-radius: 15px;
+}
+.content-comments .box-write .box-write-top{
+    width: 1100px;
+    height: 50px;
+ 
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-comments .box-write .box-write-top .box-left{
+    float: left;
+}
+.content-comments .box-write .box-write-top .box-left div{
+    float: left;
+}
+.content-comments .box-write .box-write-top .box-left .userimg{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.content-comments .box-write .box-write-top .box-left .username{
+    margin-top: 15px;
+    margin-left: 5px;
+}
+.content-comments .box-write .box-write-top .box-right{
+    float: right;
+}
+.content-comments .box-write .box-write-top .box-right div{
+    float: right;
+    margin-top: 15px;
+}
+.content-comments .box-write .box-write-bottom{
+    width: 1100px;
+    height: 90px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-comments .box-write .box-write-bottom .comment-box{
+    width: 1100px;
+    height: 85px;
+ 
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-comments .box-write .box-write-bottom .comment-box p{
+    text-align: center;
+}
+
+.content-comments .box-comments-list{
+    width: 1200px;
+    height: 150px;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+.content-comments .box-comments-list .box-write-top{
+    width: 1100px;
+    height: 50px;
+    border-bottom: 1px solid rgb(100, 100, 100);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+}
+.content-comments .box-comments-list .box-write-top .box-left{
+    float: left;
+}
+.content-comments .box-comments-list .box-write-top .box-left div{
+    float: left;
+}
+.content-comments .box-comments-list .box-write-top .box-left .userimg{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.content-comments .box-comments-list .box-write-top .box-left .username{
+    margin-top: 15px;
+    margin-left: 5px;
+}
+.content-comments .box-comments-list .box-write-bottom{
+    width: 1100px;
+    height: 50px;
+    
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-comments .box-comments-list .box-write-bottom .comment-box{
+    width: 1050px;
+    height: 45px;
+ 
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-comments .box-comments-list .box-button{
+    width: 1100px;
+    height: 30px;
+ 
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-comments .box-comments-list .box-button div{
+    float: right;
+    margin-top: 5px;
+}

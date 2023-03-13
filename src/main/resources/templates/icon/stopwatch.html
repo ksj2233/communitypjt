@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="clock.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="/iconcss/stopwatch.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body onresize="parent.resizeTo(550,400)" onload="parent.resizeTo(550,400)">
+    <div class="bodybox">
+        <h1>Stop Watch</h1>
+        <h2><span id="hour">00</span>:<span id="min">00</span>:<span id="sec">00</span></h2>
+        <div class="buttonbox">
+            <button class="start">start</button>
+            <button class="stop">stop</button>
+            <button class="reset">reset</button>
+        </div>
+    </div>
+<script src="/js/ajax/stopwatch.js"></script>
+</body>
+
+</html>

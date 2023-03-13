@@ -1,0 +1,32 @@
+#background{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.cover{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+body{
+    background-color: rgb(41, 41, 41);
+}
+.title{
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+.target{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    color: rgb(0, 0, 0);
+    font-size: 30px;
+}

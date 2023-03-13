@@ -1,0 +1,95 @@
+.bar-box{
+    position: fixed;
+    bottom: -120px;
+    left: 50%;
+    margin-bottom: 5px;
+    transform: translate(-50%, 0);
+    transition-duration:0.1s;
+}
+.bar-box:hover{
+    bottom: 0px;
+    transition-duration:0.2s;
+}
+
+.bar-box:hover .navbottombar{
+    bottom: 0px;
+    opacity: 0;
+}
+.navbottombar{
+    width: 500px;
+    height: 5px;
+    background-color: rgba(189, 189, 189, 0.4);
+    border: 2px solid rgba(116, 116, 116, 0.4);
+    border-radius: 35px;
+    margin: auto;
+	margin-bottom: 40px;
+}
+
+.bar {
+    max-width: 1920px;
+}
+
+.bar .mainbar {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 60px;
+    width: 1300px;
+    border: solid 1px rgba(185, 185, 185, 0.7);
+    border-radius: 15px;
+    background-color: rgba(185, 185, 185, 0.9);
+}
+
+.bar .mainbar ul {
+    float: left;
+    padding-left: 14px;
+    margin-top: -20px;
+}
+
+.bar .mainbar ul li {
+    margin-left: auto;
+    margin-right: auto;
+    float: left;
+    padding-right: 13px;
+    display: block;
+}
+.bar .mainbar ul li a p{
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 13px;
+    color: black;
+}
+
+.bar .mainbar ul li a{
+    text-align: center;
+}
+.bar .mainbar ul li div p{
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 13px;
+    color:  black;
+}
+.bar .mainbar ul li div {
+    text-align: center;
+}
+
+
+.bar .mainbar ul li:hover {
+    animation: move 1s ease infinite normal none running;
+}
+
+.imgtitle.on{
+    visibility: hidden;
+}
+
+@keyframes move {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(0, -20px);
+    }
+    
+}
+

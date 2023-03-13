@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="pagination">
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${page.first} ? disabled"><a class="page-link" th:href="${page.first} ? '#' : ${url}(0, ${size}, ${sort})">First</a></li>
+        <li class="page-item" th:classappend="${page.first} ? disabled"><a class="page-link" th:href="${page.first} ? '#' : ${url}( ${page.number} - 1, ${size}, ${sort})">Previous</a></li>
+        <li th:each="i : ${#numbers.sequence(page.number - 3 < 0 ? 0 : page.number - 3, page.number + 3 > page.totalPages - 1 ? page.totalPages - 1 : page.number + 3)}"
+            th:classappend="${i == page.number} ? active">
+            <a class="page-link" th:href="${url}( ${i}, ${size}, ${sort})" th:text="${i + 1}"></a>
+        </li>
+        <li class="page-item" th:classappend="${page.last} ? disabled"><a class="page-link" th:href="${page.last} ? '#' : ${url}( ${page.number} + 1, ${size}, ${sort})">Next</a></li>
+        <li class="page-item" th:classappend="${page.last} ? disabled"><a class="page-link" th:href="${page.last} ? '#' : ${url}( ${page.totalPages - 1}, ${size}, ${sort})">Last</a></li>
+    </ul>
+</div>
+</html>

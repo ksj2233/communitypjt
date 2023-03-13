@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/qnaread.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <script th:src="@{/js/jquery/jquery.min.js}"></script>
+
+    <style>
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 15px;
+            width: 350px;
+        }
+
+        .call {
+            display: none;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            text-align: center;
+        }
+
+        .modal-body {
+            height: 400px;
+            /* Set a fixed height */
+            width: 350px;
+            overflow-y: scroll;
+            /* Add scrollbar */
+            overflow-x: hidden;
+            border-top: 2px solid black;
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 10px;
+            /* 스크롤바의 너비 */
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            height: 30%;
+            /* 스크롤바의 길이 */
+            background: #c4c4c4;
+            /* 스크롤바의 색상 */
+            border-radius: 10px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: rgba(33, 122, 244, .1);
+            /*스크롤바 뒷 배경 색상*/
+        }
+
+        .modal-body .box {
+            width: 340px;
+            height: 30px;
+            margin-bottom: 2px;
+
+        }
+
+        .modal-body .box .box-userimg {
+            width: 30px;
+            height: 30px;
+
+            float: left;
+        }
+
+        .modal-body .box .box-username {
+            width: 150px;
+            height: 20px;
+
+            float: left;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+
+        .modal-body .box .box-username p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        .modal-body .box .box-starimg {
+            width: 20px;
+            height: 20px;
+
+            float: right;
+            margin-top: 5px;
+        }
+
+        .message {
+            width: 70px;
+            float: right;
+            margin-right: 10px;
+        }
+
+        .msgregister {
+            width: 70px;
+            float: right;
+            margin-right: 10px;
+        }
+
+        #msgContent {
+            resize: none;
+        }
+
+        .modaltitle {
+            width: 50px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- [header] 영역 시작 -->
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <!-- [header] 영역 끝 -->
+    <div class="content-header">
+        <div class="content-header-box">
+            <h1 class="listBtn">Q&A</h1>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="box-top">
+            <div class="box-left">
+                <div class="userimg">
+                    <img th:if="${dto.memberurl == null}" src="/img/c1.png" alt="" width="40px" height="40px">
+                    <img th:if="${dto.memberurl != null}" width="40px" height="40px"
+                        th:src="'/hello/display?fileName='+${dto.memberurl}">
+                </div>
+
+
+
+                <!-- 유저id -->
+                <div class="username">
+                    <a th:href="@{/hello/spacepage(id=${dto.id})}"><Strong>[[${dto.nickname}]] </Strong></a>
+                </div>
+
+                <!-- tag -->
+                <div class="category">
+                    <p>[[${dto.tag}]]</p>
+                </div>
+            </div>
+            <div class="box-right">
+                <div class="urlimg"><img src="/img/url.svg" alt="" width="30px" height="30px"></div>
+                <div class="recommendation"><img src="/img/like.svg" alt="" width="30px" height="30px"
+                        class="blikesBtnOpen">
+                    <input type="hidden" name="likeboardNum" th:value="${dto.boardNum}">
+                    <input type="hidden" name="likememberNum" th:value="${member.memberNum}">
+                </div>
+                <div class="report"><img src="/img/siren.png" alt="" width="30px" height="30px"></div>
+            </div>
+        </div>
+        <div class="box-title">
+            <div>
+                <!-- title -->
+                <div class="box-left">
+                    <div class="title">
+                        <h3>[[${dto.title}]]</h3>
+                    </div>
+                </div>
+                <!-- 수정&삭제 버튼 -->
+                <div class="box-right" th:if="${dto.id} == ${member.id}">
+                    <!-- 수정버튼 -->
+                    <div class="modify-button">
+                        <a th:href="@{/hello/qnamodify(boardNum=${dto.boardNum}, page=${requestDTO.page},
+									type=${requestDTO.type},
+									keyword=${requestDTO.keyword}	)}">
+                            <button type="button">수정</button>
+                        </a>
+                    </div>
+
+                    <!-- 삭제버튼 -->
+                    <!--                     <div class="delete-button">
+                    	<a th:href="@{/hello/communitymodify(boardNum=${dto.boardNum}, page=${requestDTO.page},
+									type=${requestDTO.type},
+									keyword=${requestDTO.keyword}	)}">
+                        	<button type="button">삭제</button>
+                        </a>
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 내용 -->
+        <div class="box-content">
+            <div>
+                <p>[[${dto.content}]]</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="content-comments">
+        <div class="box-top">
+
+            <!-- 댓글 cnt -->
+            <div class="box-left">
+                <p>댓글 수 : [[${dto.cnt}]]개</p>
+            </div>
+
+            <!-- list 이동 버튼 -->
+            <div class="box-button">
+
+            </div>
+        </div>
+
+        <!-- 댓글 쓰기 -->
+
+        <form>
+            <input type="hidden" name="page" th:value="${requestDTO.page}">
+            <input type="hidden" name="type" th:value="${requestDTO.type}">
+            <input type="hidden" name="keyword" th:value="${requestDTO.keyword}">
+            <div class="box-write">
+                <div class="box-write-top">
+                    <div class="box-left">
+                        <div class="userimg">
+                            <img th:if="${member.url == null}" src="/img/c1.png" alt="" width="40px" height="40px">
+                            <img th:if="${member.url != null}" width="40px" height="40px"
+                                th:src="'/hello/display?fileName='+${member.url}">
+                        </div>
+                        <!-- 유저 -->
+                        <div class="username">
+                            <p>[[${member.nickname}]] <small>[[${member.id}]]</small></p>
+                            <input type="hidden" name="commenterNum" th:value="${member.memberNum}">
+                            <p>가격</p>
+                            <input type="text" name="price" value="0">
+                        </div>
+                    </div>
+                    <div class="box-right">
+                        <div>
+                            <button type="button" class="commentSaveBnt">댓글 쓰기</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-write-bottom">
+                    <!-- 댓글 입력란 -->
+                    <div class="comment-box">
+                        <p><textarea cols="150" rows="5" name="commentContent"></textarea></p>
+                    </div>
+                    <!-- end 댓글 입력란 -->
+                </div>
+            </div>
+        </form>
+        <!-- end 댓글 쓰기 -->
+
+        <!-- 댓글 -->
+        <div class="commentList"></div>
+        <!-- end 댓글 -->
+
+    </div>
+    <!--모달-->
+    <div id="myModal" class="modal call hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 class="modalTitle"></h2>
+            </div>
+            <div class="modal-body">
+                <div class="modalReply">
+                </div>
+                <!-- Add more content as needed -->
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+
+
+
+        /* 수정버튼 클릭 */
+        $(document).on("click", ".commentModifyBtn", function () {
+            // 2. 클래스가 존재하는지 확인
+            if (!$(".commentModifyBtn").length) return;
+
+            $(".call").show();
+
+            var header = $(this).data("nickname");
+            var body =
+                '<textarea cols="45" rows="25" class="form-control" type="text" name="modalReply" placeholder="Reply text..."></textarea>';
+            var footer =
+                '<input type="hidden" name="mBoardCommentNum">' +
+                '<input type="hidden" name="mCommenterNum">' +
+                '<input class="form-control" type="hidden" name="modalMember" readonly>' +
+                '<input type="hidden" name="mClikes">' +
+                '<input type="hidden" name="price">' +
+                '<button type="button" class="btn btn-warning replyModify">수정</button>' +
+                '<button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">취소</button>';
+
+            $(".modalTitle").html(header);
+            $(".modalReply").html(body);
+            $(".modal-footer").html(footer);
+
+            // 3. textarea 태그의 name 속성 수정 및 데이터 삽입
+            $('textarea[name="modalReply"]').val($(this).data("commentcontent"));
+            $("input[name='mBoardCommentNum']").val($(this).data("boardcommentnum"));
+            $("input[name='mCommenterNum']").val($(this).data("commenternum"));
+            $("input[name='mClikes']").val($(this).data("clikes"));
+            $("input[name='price']").val($(this).data("price"));
+        });
+
+
+        /* 삭제버튼 클릭 */
+        $(document).on("click", ".commentRemoveBtn", function () {
+
+            if (!confirm("댓글을 삭제 하시겠습니까?")) {
+                return;
+            }
+
+            var boardCommentNum = $(this).data("boardcommentnum");
+
+            $.ajax({
+                url: '/comment/' + boardCommentNum,
+                method: 'delete',
+                success: function (result) {
+                    console.log("result : " + result);
+                    if (result === 'success') {
+                        alert("뎃글이 삭제되었습니다.");
+                        $(".call").hide();
+                        getComment();
+                        self.location.reload();
+                    }
+                }
+            });
+
+        });
+
+
+        /* 수정 */
+        $(document).on("click", '.replyModify', function () {
+
+            var boardCommentNum = $("input[name='mBoardCommentNum']").val();
+            var comment = {
+                boardCommentNum: boardCommentNum,
+                boardNum: boardNum,
+                commentContent: $('textarea[name="modalReply"]').val(),
+                commenterNum: $("input[name='mCommenterNum']").val(),
+                clikes: $("input[name='mClikes']").val(),
+                price: $("input[name='price']").val()
+            };
+
+            console.log(comment);
+
+            $.ajax({
+                url: '/comment/' + boardCommentNum,
+                method: 'put',
+                data: JSON.stringify(comment),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result) {
+                    console.log("result : " + result);
+                    if (result === 'success') {
+                        alert("뎃글이 수정되었습니다.");
+                        $(".call").hide();
+                        getComment();
+                    }
+                }
+            });
+        });
+
+        /* 취소 */
+        $(document).on("click", ".replyClose", function () {
+            $(".call").hide();
+        });
+
+
+        const boardNum = [[${ dto.boardNum }]];
+        const memberNumber = [[${ member.memberNum }]];
+        var memberPoint = [[${ member.point }]];
+        var getNum;
+
+
+        function getComment() {
+            $.getJSON('/comment/' + boardNum + "/all", function (arr) {
+                let str = "";
+
+                $.each(arr, function (idx, comment) {
+                    var cutContent = comment.commentContent.substr(0, 30) + '...';
+                    var picUrl = '/hello/display?fileName=' + comment.memUrl;
+                    if (picUrl == '/hello/display?fileName=' + null) { picUrl = '/img/c1.png'; }
+                    const modifyBtnClass = `commentModifyBtn-${idx}`;
+
+                    console.log("comment.commenterNum?" + comment.commenterNum)
+                    var add;
+                    if (comment.commenterNum == memberNumber) {
+                        add = "show";
+                    } else {
+                        add = "hide";
+                    }
+                    console.log(add);
+
+
+
+                    str += `
+    <div class="box-comments-list"
+         data-boardCommentNum="${comment.boardCommentNum}"
+         data-commenterNum="${comment.commenterNum}"
+         data-price="${comment.price}">
+
+        <div class="box-write-top">
+            <div class="box-left">
+                <div class="userimg">
+                    <img src="${picUrl}" alt="" width="40px" height="40px">
+                </div>
+                <div class="username">
+                <a href="/hello/spacepage?id=${comment.id}"><Strong> ${comment.nickname} </Strong></a>
+                    <small class="commentUpdateDate">${displayTime(comment.regdate)}</small>
+                </div>
+
+                <div class="box10">
+                        <p class="point">포인트 : ${comment.price}</p>
+                        <button class="btn-danger paybtn">결제</button>
+                </div>
+
+
+            </div>
+            <div class="box-right">
+            <button type="button" 
+                    class="commentModifyBtn ${add}"
+                    data-boardCommentNum="${comment.boardCommentNum}"
+                    data-commenterNum="${comment.commenterNum}"
+                    data-clikes="${comment.clikes}"
+                    data-commentContent="${comment.commentContent}"
+                    data-nickname="${comment.nickname}"
+                    data-price="${comment.price}">
+                수정
+            </button>
+            <button type="button"
+                    class="commentRemoveBtn ${add}"
+                    data-boardCommentNum="${comment.boardCommentNum}">
+                삭제
+            </button>
+            <button data-boardCommentNum="${comment.boardCommentNum}"
+                    type="button"
+                    class="clikesBtnOpen">좋아요
+            </button>
+        </div>
+        </div>
+
+        <div class="box-write-bottom">
+            <div class="comment-box">${cutContent}</div>
+        </div>
+        <div class="box-button"></div>
+    </div>
+`;
+                });
+
+                $(".commentList").html(str);
+
+
+
+
+
+
+                // 댓글 상세보기 버튼 클릭 이벤트 핸들러
+                $(".paybtn").on("click", function () {
+
+                    const $boxCommentsList = $(this).closest(".box-comments-list");
+                    const commenterNum = $boxCommentsList.data("commenternum");
+                    const boardCommentNum = $boxCommentsList.data("boardcommentnum");
+                    const price = $boxCommentsList.data("price");
+
+                    if (price > memberPoint) {
+                        if (!confirm("포인트가 부족합니다 충전창으로 이동하시겠습니까?")) {
+                            return false;
+                        } else {
+                            window.location.href = "/hello/point";
+                            return false;
+                        }
+                    }
+
+                    memberPoint -= price;
+
+                    const acountData = {
+                        'memberNumber': memberNumber,
+                        'boardCommentNum': boardCommentNum
+                    }
+
+                    $.ajax({
+                        url: '/comment/payCheck',
+                        data: acountData,
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                        success: function (result) {
+                            if (result) {
+
+                            } else {
+                                var transData = {
+                                    'myNum': memberNumber,
+                                    'yourNum': commenterNum,
+                                    'point': price
+                                }
+
+                                $.ajax({
+                                    url: '/hello/transaction',
+                                    data: transData,
+                                    type: 'post',
+                                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                    success: function (result) {
+                                        alert('결제가 완료 되었습니다.');
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    var BCN = {
+                        'boardCommentNum': boardCommentNum
+                    }
+                    $.ajax({
+                        url: '/comment/readModal',
+                        data: BCN,
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                        success: function (result) {
+                            getNum = result.commenterNum;
+
+                            $(".modalReply").html("");
+                            $(".modal-footer").html("");
+
+
+
+                            $(".modalReply").html("");
+                            $(".modalTitle").html("");
+                            $(".modalReply").html(result.commentContent);
+                            var replystr = ' <div><button class="btn-danger message">쪽지쓰기</button></div>'
+                            $(".modalTitle").html(replystr);
+                        }
+                    })
+                    $(".call").show();
+
+                    $(document).on("click", ".message", function () {
+
+                        $(".modalReply").html("");
+                        $(".modalTitle").html("");
+                        $(".modalTitle").html('<input type="text" class="msgTitle" placeholder="쪽지 제목">');
+                        $(".modalReply").html('<textarea id="msgContent" cols="45" rows="20"></textarea>' + '<button class="btn-danger msgregister">쪽지전송</button>');
+                        $(document).on("click", ".msgregister", function () {
+                            var msg = $("#msgContent").val();
+                            var msgTitle = $(".msgTitle").val();
+
+                            // 발송 전 제목,본문 공백 및 최대 글자수 체크
+                            if ((msgTitle.trim() == '') || (msgTitle.length > 15)) {
+                                alert("제목이 비어있거나 너무 깁니다.");
+                                $(".msgTitle").val("");
+                                $(".msgTitle").focus();
+                                return false;
+                            } else if (($("#msgContent").val() == '') || (msg.length > 300)) {
+                                alert("본문이 비어있거나 너무 깁니다.");
+                                $("#msgContent").val("");
+                                $("#msgContent").focus();
+                                return false;
+                            }
+                            if (!confirm("전송하시겠습니까?")) {
+                                return false;
+                            }
+
+                            var msgData = {
+                                'content': msg,
+                                'title': msgTitle,
+                                'boardCommentNum': boardCommentNum,
+                                'yourNum': getNum
+                            }
+
+                            $.ajax({
+                                url: '/hello/message/register',
+                                data: msgData,
+                                type: 'post',
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (result) {
+                                    window.location.href = "/hello/message";
+                                }
+                            });
+                        });
+                    });
+                });
+            })
+        }
+
+        getComment();
+
+
+
+        var actionForm = $("form");
+        $(".listBtn").click(function () {
+            var pageInfo = $("input[name='page']");
+            var type = $("input[name='page']");
+            var keyword = $("input[name='keyword']");
+
+            actionForm.empty();
+            actionForm.append(pageInfo);
+            actionForm.append(type);
+            actionForm.append(keyword);
+            actionForm.attr("action", "/hello/qnalist")
+                .attr("method", "GET");
+
+            actionForm.submit();
+        });
+
+
+
+        $(".commentSaveBnt").click(function () {
+
+            var comment = {
+                boardNum: boardNum,
+                commentContent: $('textarea[name="commentContent"]').val(),
+                commenterNum: memberNumber,
+                price: $('input[name="price"]').val()
+            }
+            console.log(comment);
+
+            $.ajax({
+                url: '/comment/' + boardNum,
+                type: 'post',
+                data: JSON.stringify(comment),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'text',
+                success: function (result) {
+                    console.log("success result : " + result);
+                    self.location.reload();
+                    alert("댓글이 등록되었습니다.");
+                    getComment();
+                }
+            }); // ajax 끝
+        }); //commentSaveBnt 끝
+
+
+        function displayTime(timeValue) {
+            var today = new Date(); // 현재 시간
+            var date = new Date(timeValue).getTime();
+            var gap = today.getTime() - date;
+            var dateObj = new Date(timeValue);
+            var str = "";
+
+
+            console.log(date);
+            console.log(today.getTime());
+            console.log(gap);
+
+
+
+            if (gap < (1000 * 60 * 60 * 24)) {
+
+                // comment 시간
+                var hh = dateObj.getHours();
+                var mi = dateObj.getMinutes();
+                var ss = dateObj.getSeconds();
+
+                // 현재 시간
+                var rhh = today.getHours();
+                var rmi = today.getMinutes();
+                var rss = today.getSeconds();
+
+                // 표시 예) 1시간 전 or 10분 전
+
+                if (rhh > hh) {
+                    return [(rhh - hh > 9 ? '' : '0') + rhh - hh, '시간 전'].join('');
+                } else {
+
+                    return [(rmi - mi > 9 ? '' : '0') + rmi - mi, '분 전'].join('');
+                }
+
+
+            } else {
+                var yy = dateObj.getFullYear();
+                var mm = dateObj.getMonth() + 1;
+                var dd = dateObj.getDate();
+
+                return [yy, '/', (mm > 9 ? '' : '0') + mm, '/',
+                    (dd > 9 ? '' : '0') + dd].join('');
+            }
+        }
+
+        // comment 좋아요 처리
+        //clikesBtnOpen
+        $(document).on("click", ".clikesBtnOpen", function () {
+
+            var commentid = $(this).data("boardcommentnum");
+            console.log(commentid);
+
+            var like = {
+                commentid: commentid,
+                memberNum: memberNumber
+            };
+            console.log(like);
+
+            $.ajax({
+                url: '/like/' + commentid + '/all',
+                type: 'post',
+                data: JSON.stringify(like),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'text',
+                success: function (result) {
+                    console.log("success result : " + result);
+                    self.location.reload();
+
+                }
+            }); // ajax 끝
+        }); //clikesBtnOpen 끝
+
+
+
+    });
+
+    /* URL 복사 기능 */
+    $(".urlimg").on("click", function () {
+
+        var url = '';
+        var textarea = document.createElement("textarea");
+        document.body.appendChild(textarea);
+        url = window.document.location.href;
+        textarea.value = url;
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        alert("URL이 복사되었습니다.")
+
+    })
+    /* END URL 복사 기능 */
+
+</script>
+<script>
+    // 모달창 관련
+    $("#qwer").on("click", function () {
+        $(".call").show();
+    });
+    $(".close").on("click", function () {
+        $(".call").hide();
+    });
+    var modal1 = $(".call");
+
+
+    $(window).click(function (event) {
+        if (event.target == modal1[0]) {
+            modal1.css("display", "none");
+        }
+    });
+    // board 좋아요 처리
+    // blikesBtnOpen
+    $(".blikesBtnOpen").click(function () {
+
+        var like = {
+            boardNum: boardNum,
+            memberNum: $('input[name="likememberNum"]').val()
+        };
+        console.log(like);
+
+        $.ajax({
+            url: '/like/' + boardNum,
+            type: 'post',
+            data: JSON.stringify(like),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'text',
+            success: function (result) {
+                console.log("success result : " + result);
+                self.location.reload();
+
+            }
+        }); // ajax 끝
+    }); //blikesBtnOpen 끝
+
+
+</script>
+
+
+</html>

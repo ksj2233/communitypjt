@@ -1,0 +1,95 @@
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 15px;
+    width: 350px;
+  }
+  .call{
+    display: none;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .modal-header{
+      text-align: center;
+  }
+  .modal-body {
+    height: 400px; /* Set a fixed height */
+    width: 350px;
+    overflow-y: scroll; /* Add scrollbar */
+    overflow-x: hidden;
+    border-top: 2px solid black;
+  }
+  .modal-body::-webkit-scrollbar {
+      width: 10px;  /* 스크롤바의 너비 */
+  }
+  .modal-body::-webkit-scrollbar-thumb {
+      height: 30%; /* 스크롤바의 길이 */
+      background: #c4c4c4; /* 스크롤바의 색상 */
+      border-radius: 10px;
+  }
+  .modal-body::-webkit-scrollbar-track {
+      background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+  }
+  .modal-body .box{
+      width: 340px;
+      height: 30px;
+      margin-bottom: 2px;
+      
+  }
+  
+  .modal-body .box .box-userimg{
+      width: 30px;
+      height: 30px;
+      
+      float: left;
+  }
+  .modal-body .box .box-username{
+      width: 150px;
+      height: 20px;
+      
+      float: left;
+      margin-top: 5px;
+      margin-left: 5px;
+  }
+  .modal-body .box .box-username p{
+      margin: 0;
+      font-size: 15px;
+      font-weight: 900;
+  }
+  .modal-body .box .box-starimg{
+      width: 20px;
+      height: 20px;
+      
+      float: right;
+      margin-top: 5px;
+  }

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /*모달창 point*/
+.point {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.point_overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.point_content {
+    background-color: rgb(247, 126, 13);
+    position: relative;
+    text-align: center;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.point_content button{
+    float: right;
+    background-color: rgb(247, 126, 13);
+    border-radius: 25px;
+    color: steelblue;
+    padding: 5px 20px;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.point-wrapper {
+    width: 600px;
+    height: 330px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    background-color: rgb(247, 126, 13);
+    border-radius: 25px;
+    padding: 10px 20px;
+}
+.point-wrapper .box-title{
+    width: 550px;
+    height: 70px;
+    border-bottom: 3px solid white;
+
+}
+.point-wrapper .box-title .box-title-point{
+    width: 150px;
+    height: 70px;
+    float: left;
+    margin-left: 200px;
+    color: white;
+
+}
+.point-wrapper .box-content .box-button{
+    width: 200px;
+    height: 70px;
+    margin: auto;
+}
+.point-wrapper .box-content .box-button button{
+    width: 90px;
+    height: 30px;
+    border: 2px solid rgb(161, 95, 19);
+    font-size: 11px;
+    border-radius: 10px;
+    margin:10px 5px 0 5px; 
+    color: white;
+}
+.point-wrapper .box-content .box-button button:hover{
+    background-color: rgb(148, 89, 21);
+}
+.point-wrapper .box-content{
+    width: 450px;
+    height: 50px;
+ 
+    margin: auto;
+    margin-top: 30px;
+}
+.point-wrapper .box-content .box-left{
+    width: 150px;
+    height: 70px;
+
+    float: left;
+}
+.point-wrapper .box-content .box-left h3{
+    margin-top: 20px;
+    font-size: 30px;
+    color: white;
+}
+.point-wrapper .box-content .box-right{
+    width: 150px;
+    height: 70px;
+   
+    float: right;
+}
+.point-wrapper .box-content .box-right p{
+    margin-top: 20px;
+    font-size: 30px;
+    color: white;
+    font-weight: 900;
+}
+
+.point-wrapper .box-content .box-right #rank{
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 900;
+    color: rgb(92, 91, 91);
+}
+
+</style>
+<body>
+    <a id="open-point">포인트</a>
+    <!--포인트-->
+    <div class="point hidden">
+        <div class="point_overlay"></div>
+        <div class="point_content">
+            <button>X</button>
+            <div class="point-wrapper">
+                <div class="box-title">
+                    <div class="box-title-point">
+                        <h1>포인트</h1>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="box-left">
+                        <h3>포인트</h3>
+                    </div>
+                    <div class="box-right">
+                        <p>10,000원</p>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="box-left">
+                        <h3>등급</h3>
+                    </div>
+                    <div class="box-right">
+                        <p id="rank">실버</p>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="box-button">
+                        <button>결제내역</button>
+                        <button>충전하기</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        const pointopenButton = document.getElementById("open-point");
+        const pointmodal = document.querySelector(".point");
+        const pointoverlay = pointmodal.querySelector(".point_overlay");
+        const pointcloseBtn = pointmodal.querySelector("button");
+        const pointopenModal = () => {
+            pointmodal.classList.remove("hidden");
+        }
+        const pointcloseModal = () => {
+            pointmodal.classList.add("hidden");
+        }
+        pointoverlay.addEventListener("click", pointcloseModal);
+        pointcloseBtn.addEventListener("click", pointcloseModal);
+        pointopenButton.addEventListener("click", pointopenModal);
+        
+    </script>
+</body>
+</html>

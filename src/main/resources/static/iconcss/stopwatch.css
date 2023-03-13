@@ -1,0 +1,48 @@
+ body {
+        background-color: rgb(82, 82, 82);
+    }
+
+    .bodybox {
+        position: fixed;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 40px;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 50px;
+    }
+
+    .buttonbox {
+        width: 205px;
+        height: 40px;
+        margin: auto;
+    }
+
+    .buttonbox button {
+        padding: 5px 18px;
+        border-radius: 15px;
+        border: none;
+        color: white;
+    }
+
+    .buttonbox .start {
+        background-color: green;
+    }
+
+    .buttonbox .stop {
+        background-color: red;
+    }
+
+    .buttonbox .reset {
+        background-color: blue;
+    }
+    .buttonbox button:hover{
+        border: 1px solid black;
+    }

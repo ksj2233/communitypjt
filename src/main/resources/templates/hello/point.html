@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포인트</title>
+    <link rel="stylesheet" href="/css/point.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/kakaopaymodal.css">
+    
+	<!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+</head>
+
+<body>
+    <!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+	
+    <div class="content-body">
+        <div class="tabs">
+            <input id="box1" type="radio" name="tab_item" checked>
+            <label class="tab_item tab_item1" for="box1">충전하기</label>
+            <input id="box2" type="radio" name="tab_item">
+            <label class="tab_item" for="box2">환전하기</label>
+            <input id="box3" type="radio" name="tab_item">
+            <label class="tab_item" for="box3">결제내역</label>
+            <input id="box4" type="radio" name="tab_item">
+            <label class="tab_item tab_item4" for="box4">쿠폰</label>
+            
+	        <div class="tab_content" id="box1_content">
+	          <form th:action="@{/hello/charge(id=${my.memberNum},point=${my.point})}" method="post" th:onsubmit="return Ok2Submit();">
+	                <div class="content-box1">
+	                    <div class="box-title"><p>현재 잔액 : <span id="jb">[[${my.point}]]</span>포인트</p></div>
+	                    <div class="box-top"><input type="text" id="charge" name="charge"><img src="/img/won.png" alt="" width="65px"></div>
+	                    <input type="hidden" th:value="${my.point}" id="testPoint">
+	                    <div class="box-bottom">
+	                    	<button type="submit">충전하기</button>
+	                    	<div id="myBtn" ><p>간편결제</p></div>
+	                    </div>
+	                </div>
+	          </form>
+	        </div>
+	        
+            <div class="tab_content" id="box2_content">
+                <div class="content-box2">
+                  <form th:action="@{/hello/exchange(id=${my.memberNum},point=${my.point})}" method="post" th:onsubmit="return OkSubmit();">
+                    <div class="box-title"><p>현재 잔액 : <span id="jb1">[[${my.point}]]</span>포인트</p></div>
+                    <div class="box-top"><input type="text" name="exchange" id="exchange"><img src="/img/won.png" alt="" width="65px"></div>
+                    <div class="box-bottom"><button type="submit">환전하기</button></div>
+                  </form>
+                </div>
+            </div>
+            
+            <div class="tab_content" id="box3_content">
+                <div class="content-box3">
+                    <div class="box-table-top">
+                        <div class="box1">날짜</div>
+                        <div class="box2">충전액</div>
+                        <div class="box3">환전액</div>
+                        <div class="box4">잔여포인트</div>
+                    </div>
+                    <div class="box-table" th:each="point : ${list}">
+                        <div class="box1">[[${#temporals.format(point.regDate, 'yy/MM/dd HH:mm')}]]</div>
+                        <div class="box2" th:if="${point.charge} == null or ${point.charge} == 0"></div>
+                        <div class="box2" th:if="${point.charge} != null and ${point.charge} != 0" data-th-text="${#numbers.formatInteger(point.charge, 3, 'COMMA') + '원'}"></div>
+                        <div class="box3" th:if="${point.exchange} == null or ${point.exchange} == 0"></div>
+                        <div class="box3" th:if="${point.exchange} != null and ${point.exchange} != 0" data-th-text="${#numbers.formatInteger(point.exchange, 3, 'COMMA') + '원'}"></div>
+                        <div class="box4" th:if="${point.balance} == null or ${point.balance} == 0" data-th-text="${0 + 'P'}"></div>
+                        <div class="box4" th:if="${point.balance} != null and ${point.balance} != 0" data-th-text="${#numbers.formatInteger(point.balance, 3, 'COMMA') + 'P'}"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab_content" id="box4_content">
+                <div class="content-box2">
+                    <div class="box-title"><p>현재 잔액 : <span id="jb2">[[${my.point}]]</span>포인트</p></div>
+                    <div class="box-top"><input type="text" id="coupon"><img src="/img/won.png" alt="" width="65px"></div>
+                    <div class="box-bottom"><button type="button" onclick="chk();">쿠폰등록</button></div>
+                </div>
+            </div>
+        </div>
+   </div>
+        
+   <!-- Modal -->
+   <div id="myModal" class="modal">
+       <div class="modal-content">
+           <div class="modal-header">
+               <span class="close">&times;</span>
+               <div class='wave -one'></div>
+               <div class='wave -two'></div>
+               <div class='wave -three'></div>
+               <h2 class="title">카카오페이</h2>
+           </div>
+           <div class="modal-body">
+               <div class="card-body bg-white mt-0 shadow">
+                   <p>충전 금액을 선택해 주세요.</p>
+                   
+                   <div class="box">
+                       <label class="box-radio-input out bgr1"> <span class="price-text"> 5000원 </span> <input class="radio-all price1" onclick="checkRadio()" type="radio" name="cp_item" value="5000"></label>
+                       <label class="box-radio-input out bgr2"> <span class="price-text">10000원</span> <input class="radio-all price2" onclick="checkRadio()" type="radio" name="cp_item" value="10000"></label>
+                       <label class="box-radio-input out bgr3"> <span class="price-text">15000원</span> <input class="radio-all price3" onclick="checkRadio()" type="radio" name="cp_item" value="15000"></label>
+                       <label class="box-radio-input out bgr4"> <span class="price-text">20000원</span> <input class="radio-all price4" onclick="checkRadio()" type="radio" name="cp_item" value="20000"></label>
+                       <label class="box-radio-input out bgr5"> <span class="price-text">25000원</span> <input class="radio-all price5" onclick="checkRadio()" type="radio" name="cp_item" value="25000"></label>
+                       <label class="box-radio-input out bgr6"> <span class="price-text">30000원</span> <input class="radio-all price6" onclick="checkRadio()" type="radio" name="cp_item" value="30000"></label>
+                       <label class="box-radio-input out bgr7"> <span class="price-text">35000원</span> <input class="radio-all price7" onclick="checkRadio()" type="radio" name="cp_item" value="35000"></label>
+                       <label class="box-radio-input out bgr8"> <span class="price-text">40000원</span> <input class="radio-all price8" onclick="checkRadio()" type="radio" name="cp_item" value="40000"></label>
+                       <label class="box-radio-input out bgr9"> <span class="price-text">50000원</span> <input class="radio-all price9" onclick="checkRadio()" type="radio" name="cp_item" value="50000"></label>
+                   </div>
+                   <p class="text10"style="color: #ac2925; margin-top: 17px">카카오페이의 최소 충전금액은 5,000원이며 <br />최대 충전금액은 50,000원 입니다.
+                   </p>
+                   <div class="button-box"><button type="button" class="btn btn-lg btn-block  btn-custom" id="charge_kakao" onclick="requestPay()">충 전 하 기</button>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>     
+
+	
+   <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+   <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+	<script>
+		function checkRadio() {
+			for (let i = 1; i < 10; i++) {
+			    let evalStr = 'var price' + i + ' =  $(".price'+i+'").is(":checked")';
+			    eval(evalStr);
+			    
+			    if(eval('price'+i)){
+			        $(".bgr"+i).addClass("yellow-background");
+			     }else{
+			        $(".bgr"+i).removeClass("yellow-background");
+			     }
+			}
+		}
+	</script>  
+
+
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	 IMP.init("imp17634270");
+	 
+	function requestPay()  {
+	 
+	 var charge = $('input[name="cp_item"]:checked').val();
+	 
+	 const my = /*[[${my}]]*/ {};
+	 const myNickname = /*[[${my.nickname}]]*/ {};
+	 const myNum = /*[[${my.memberNum}]]*/ {};
+	 
+	 IMP.request_pay({
+		 pg : 'kakaopay.TC0ONETIME',
+         pay_method : 'card',
+         merchant_uid: 'merchant_' + new Date().getTime(), //매번 고유해야함
+         name : '포인트 충전',
+         amount : charge,
+         buyer_name : myNickname
+	 }, function (rsp) {
+		 if (rsp.success) {
+             console.log(rsp);
+	         $.ajax({
+	             type: "POST", 
+	             url: "/hello/kakaopay", //충전 금액값을 보낼 url 설정
+	             contentType: 'application/json; charset=utf-8',
+	             dataType: 'json',
+	             data: JSON.stringify({
+	                 "memberNum" : myNum,
+	             	 "charge" : charge
+	             }),
+	             success: function (result){
+	             	if (result){
+	             		alert("결제에 성공했습니다.");
+	             		window.location.reload();
+	             	} else {
+	             		alert("결제에 실패했습니다.");
+	             	}
+	             }
+	         });
+         } else {
+             console.log(rsp);
+             	alert("결제에 실패했습니다.");
+         }	 
+	 });
+	};
+	/*]]>*/
+	</script>
+
+
+	<script>
+             // Get the modal
+             var modal = document.getElementById("myModal");
+
+             // Get the button that opens the modal
+             var btn = document.getElementById("myBtn");
+
+             // Get the <span> element that closes the modal
+             var span = document.getElementsByClassName("close")[0];
+
+             // When the user clicks the button, open the modal 
+             btn.onclick = function () {
+                 modal.style.display = "block";
+             }
+
+             // When the user clicks on <span> (x), close the modal
+             span.onclick = function () {
+                 modal.style.display = "none";
+             }
+
+             // When the user clicks anywhere outside of the modal, close it
+             window.onclick = function (event) {
+                 if (event.target == modal) {
+                     modal.style.display = "none";
+                 }
+             }
+ 	</script>
+   
+   
+   <script>
+      $( document ).ready( function() {
+        $( '#jb' ).text( $( '#jb' ).text().replace( /\,/g, '' ).replace( /(\d)(?=(?:\d{3})+(?!\d))/g, '$1,' ) );
+        $( '#jb1' ).text( $( '#jb' ).text().replace( /\,/g, '' ).replace( /(\d)(?=(?:\d{3})+(?!\d))/g, '$1,' ) );
+        $( '#jb2' ).text( $( '#jb' ).text().replace( /\,/g, '' ).replace( /(\d)(?=(?:\d{3})+(?!\d))/g, '$1,' ) );
+      } );
+   </script>
+   
+   
+   	<script type="text/javascript">
+
+		// ajax로 nickname 중복확인
+		function chk(){
+		    var coupon = $("#coupon").val();
+	
+		    $.ajax({
+		    	url: '/hello/coupon/chk/'+coupon,
+		        type: 'POST',
+		        data: JSON.stringify(coupon),
+		        contentType: "application/json; charset=utf-8",
+		        dataType: 'text',
+		        success: function (result) {
+		            if(0 == result){
+		                alert('쿠폰이 정상 등록되었습니다.');
+		                location.reload();
+		            }else{
+		                alert('쿠폰 번호를 다시 확인해주세요.');
+		            }
+		        }
+		    })
+		};
+
+		// 환불이 가능한지 확인
+		function OkSubmit() {
+	        var point = document.getElementById( 'testPoint' ).value;
+	        var exchange = $("#exchange").val();
+	        if ( point < 1000000 ) {
+	          alert( '100만포인트부터 환전이 가능합니다.' );
+	          return false;
+	        }else if(point/100 < exchange){
+	        	alert("현재 잔액보다 많은 돈은 환전 불가능합니다.");
+	        	return false;
+	        }else if(exchange < 10000){
+	          alert( '만원 이상부터 환전 가능합니다.' );
+	        	return false;
+	        }else if(exchange == ""){
+	          alert( '금액을 입력해주세요.' );
+	        	return false;
+	        }
+	        console.log( " 값이 뜨는지 ??? "+exchange);
+	        console.log( " 값이 뜨는지 ??? "+point);
+
+	      }
+
+		//충전 가능 금액 확인
+		function Ok2Submit(){
+			var change = $("#charge").val();
+			if(change == ""){
+				alert( '충전 금액이 비었습니다.' );
+		          return false;
+			}else if(change <10000){
+				alert( '만원 이상부터 충전 가능합니다.' );
+		          return false;
+			}
+		}
+	</script>
+	
+	
+    <footer th:replace="fragments/footer :: footerFragment"></footer>
+        
+</body>
+
+</html>

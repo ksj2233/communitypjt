@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap');
+
+
+*{
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+body{
+    font-size: 14px;
+    font-family: 'Gowun Batang', serif;
+    background-color: #f3f4f5;
+}
+
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+
+/*상단 바*/
+.innerHeader {
+    max-width: 100%;
+    height: 30px;
+    line-height: 30px;
+    margin: auto;
+    background-color: rgb(34, 34, 34);
+}
+
+.innerHeader .logo {
+    float: left;
+}
+
+.innerHeader .logo a {
+    display: block;
+    padding-left: 10px;
+}
+
+/*상단 바 왼쪽*/
+.innerHeader .mainmenu-left {
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-left .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-left .navbar li {
+    float: left;
+    margin: 2px 15px;
+}
+
+.innerHeader .mainmenu-left .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    font-weight: bolder;
+}
+
+.innerHeader .mainmenu-left .navbar li a:hover {
+    font-size: 14px;
+}
+
+/*상단 바 오른쪽*/
+.innerHeader .mainmenu-right {
+    float: right;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-right .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 2px 15px;
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+.innerHeader .mainmenu-right .navbar li a:hover {
+    font-size: 14px;
+}
+
+.innerHeader .mainmenu-right .navbar li img {
+    display: block;
+    margin: 2px 10px 0px;
+}
+
+
+.subnavbar{
+    padding-top: 10px;
+    width: 1200px;
+    height: 50px;
+   
+    margin: auto;
+    margin-top: 20px;
+}
+.subnavbar div{
+    width: 200px;
+    height: 50px;
+   
+    float: left;
+}
+.subnavbar .box{
+    width: 370px;
+    
+}
+
+.subnavbar .box1{
+    width: 450px;
+}
+.subnavbar div h1{
+    text-align: center;
+    font-size: 30px;
+    color: rgb(19, 165, 165);
+}
+.subnavbar .box2{
+    float: right;
+    width: 100px;
+    margin-top: 10px;
+}
+.subnavbar .box3{
+    float: right;
+    width: 100px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+.subnavbar div h4{
+    text-align: center;
+    margin-top: 10px;
+}
+.subnavbar ul{
+    float: left;
+}
+.subnavbar ul li{
+    float: left;
+    margin-right: 10px;
+}
+.subnavbar ul .user-img{
+    margin-top: 5px;
+    background-color: black;
+    border-radius: 50%;
+}
+.subnavbar ul .user-img img{
+    width: 50px;
+    height: 50px;
+}
+.subnavbar ul .star{
+    margin-top: 7px;
+}
+.subnavbar ul .text{
+    margin-top: 10px;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+.subnavbar ul .text p{
+    margin-top: 12px;
+}
+.subnavbar ul .text img{
+    width: 50px;
+    height: 50px;
+}
+
+
+.line{
+    margin-top: 20px;
+    max-width: 1920px;
+    height: 2px;
+    background-color: rgb(226, 225, 225);
+}
+.content{
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    max-height: 2000px;
+    border: 2px solid rgb(19, 165, 165);
+    border-radius: 15px;
+    margin-bottom: 100px;
+}
+.content .div-content{
+    max-width: 1320px;
+    height: 250px;
+    border-bottom: 1px solid #e2e3e4;
+}
+.content div h1{
+    margin-left: 50px;
+    margin-top: 20px;
+    font-size: 20px;
+}
+.content .div-content .content-introduce{
+    border: 1px solid #a3a3a3;
+    width: 900px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.content .div-content .content-introduce .introduce-button{
+    width: 70px;
+    height: 30px;
+    float: right;
+    margin-top: 15px;
+    margin-right: 30px;
+}
+.content .div-content .content-introduce .introduce-button button{
+    width: 80px;
+    height: 30px;
+    background-color: rgb(19, 165, 165);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: 900;
+}
+.content .div-content .content-board{
+    border: 1px solid #a3a3a3;
+    width: 900px;
+    height: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 0;
+    overflow-y: scroll;
+}
+.content .div-content .content-board::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+.content .div-content .content-board::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #949494; /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+.content .div-content .content-board::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+}
+.content .div-content .content-board .register-box{
+    width: 800px;
+    height: 25px;
+    border-bottom: 1px dotted #a3a3a3;
+    margin: auto;
+    margin-top: 5px;
+}
+.content .div-content .content-board .register-box .box1{
+    width: 350px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}
+.content .div-content .content-board .register-box .box2{
+    width: 220px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+    margin-left: 5px;
+}
+.content .div-content .content-board .register-box .box3{
+    width: 50px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}
+.content .div-content .content-board .register-box .box4{
+    width: 100px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}
+.content .div-content .content-board .register-box .box5{
+    width: 100px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}
+
+.content .div-content .content-chat{
+    border: 1px solid #a3a3a3;
+    width: 900px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+}
+.content .div-content .content-chat::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+.content .div-content .content-chat::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #949494; /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+.content .div-content .content-chat::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+}
+.content .div-content .content-chat .register-box{
+    width: 800px;
+    height: 25px;
+    border-bottom: 1px dotted #a3a3a3;
+    margin: auto;
+    margin-top: 5px;
+}
+.content .div-content .content-chat .register-box .box1{
+    width: 350px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}
+.content .div-content .content-chat .register-box .box2{
+    width: 100px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+    margin-left: 30px;
+}
+.content .div-content .content-chat .register-box .box3{
+    width: 100px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}
+.content .div-content .content-chat .register-box .box4{
+    width: 100px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}
+.content .div-content .content-chat .register-box .box5{
+    width: 100px;
+    height: 25px;
+    
+    float: left;
+    text-align: center;
+}

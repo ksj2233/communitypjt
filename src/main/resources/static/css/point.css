@@ -1,0 +1,440 @@
+
+
+
+*{
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+body{
+    font-size: 14px;
+
+    background-color: #a7a6a6;
+}
+
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+.close{
+	display: none;	
+}
+.text10{
+	margin-bottom:20px;
+}
+.bgr1{
+	margin-left: 11px;
+}
+/*상단 바*/
+.innerHeader {
+    max-width: 100%;
+    height: 30px;
+    line-height: 30px;
+    margin: auto;
+    background-color: rgb(34, 34, 34);
+}
+
+.innerHeader .logo {
+    float: left;
+    margin-top: 2px;
+}
+
+.innerHeader .logo a {
+    display: block;
+    padding-left: 10px;
+}
+
+/*상단 바 왼쪽*/
+.innerHeader .mainmenu-left {
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-left .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-left .navbar li {
+    float: left;
+    margin: 2px 15px;
+}
+
+.innerHeader .mainmenu-left .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    font-weight: bolder;
+}
+
+.innerHeader .mainmenu-left .navbar li a:hover {
+    font-size: 14px;
+}
+
+/*상단 바 오른쪽*/
+.innerHeader .mainmenu-right {
+    float: right;
+    overflow: hidden;
+    position: relative;
+}
+
+.innerHeader .mainmenu-right .navbar {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li {
+    float: left;
+}
+
+.innerHeader .mainmenu-right .navbar li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 2px 15px;
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+.innerHeader .mainmenu-right .navbar li a:hover {
+    font-size: 14px;
+}
+
+.innerHeader .mainmenu-right .navbar li img {
+    display: block;
+    margin: 2px 10px 0px;
+}
+.content-body{
+    width: 1000px;
+    height: 600px;
+
+    margin: auto;
+    margin-top: 150px;
+}
+
+
+
+/* 탭 전체 스타일 */
+.tabs {
+  margin-top: 50px;
+  padding-bottom: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: 2px solid rgb(247, 126, 13);
+}
+
+/* 탭 스타일 */
+.tab_item {
+  width: calc(100%/4);
+  height: 50px;
+  border-bottom: 3px solid rgb(247, 126, 13);
+  background-color: #f8f8f8;
+  line-height: 50px;
+  font-size: 16px;
+  text-align: center;
+  color: #333333;
+  display: block;
+  float: left;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+.tabs .tab_item1{
+    border-top-left-radius: 15px;
+}
+.tabs .tab_item4{
+    border-top-right-radius: 15px;
+}
+.tab_item:hover {
+  opacity: 0.75;
+}
+
+/* 라디오 버튼 UI삭제*/
+input[name="tab_item"] {
+  display: none;
+}
+
+/* 탭 컨텐츠 스타일 */
+.tab_content {
+  display: none;
+  height: 350px;
+  padding: 40px 40px 0;
+  clear: both;
+  overflow: hidden;
+}
+
+.tab_content .content-box1{
+    width: 100%;
+    height: 330px; 
+}
+.tab_content .content-box1 .box-title{
+    width: 450px;
+    height: 50px;
+    margin: auto;
+    margin-top: 30px;
+    text-align: center;
+    font-size: 25px;
+}
+.tab_content .content-box1 .box-top{
+    width: 510px;
+    height: 100px;
+    margin: auto;
+    margin-top: 40px;
+}
+.tab_content .content-box1 .box-top input{
+    border: 2px solid rgb(247, 126, 13);
+    width: 400px;
+    height: 50px;
+    font-size: 30px;
+    float: left;
+    margin-left: 30px;
+}
+.tab_content .content-box1 .box-top img{
+    float: right;
+}
+.tab_content .content-box1 .box-bottom{
+    width: 212px;
+    height: 50px;
+    margin: auto;
+    margin-top: 50px;
+}
+.tab_content .content-box1 .box-bottom button{
+    padding: 10px 24px;
+    background-color: rgb(247, 126, 13);
+    color: white;
+    border-radius: 5px;
+    float: left;
+}
+.tab_content .content-box1 .box-bottom div{
+    margin-left: 5px;
+    float: left;
+    width: 100px;
+    height: 38px;
+    background-color: #fde404;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+}
+.tab_content .content-box1 .box-bottom div p{
+    margin-top: 10px;
+}
+.tab_content .content-box2{
+    width: 100%;
+    height: 330px; 
+}
+.tab_content .content-box2 .box-title{
+    width: 450px;
+    height: 50px;
+    margin: auto;
+    margin-top: 30px;
+    text-align: center;
+    font-size: 25px;
+}
+.tab_content .content-box2 .box-top{
+    width: 510px;
+    height: 100px;
+    margin: auto;
+    margin-top: 40px;
+}
+.tab_content .content-box2 .box-top input{
+    border: 2px solid rgb(247, 126, 13);
+    width: 400px;
+    height: 50px;
+    font-size: 30px;
+    float: left;
+    margin-left: 30px;
+}
+.tab_content .content-box2 .box-top img{
+    float: right;
+}
+.tab_content .content-box2 .box-bottom{
+    width: 102px;
+    height: 50px;
+    margin: auto;
+    margin-top: 50px;
+}
+.tab_content .content-box2 .box-bottom button{
+    padding: 10px 24px;
+    background-color: rgb(247, 126, 13);
+    color: white;
+    border-radius: 5px;
+}
+
+.tab_content .content-box3{
+    width: 100%;
+    height: 330px; 
+    
+    overflow-y: scroll;
+    overflow-x : hidden;
+}
+.tab_content .content-box3 .box-table-top{
+    width: 99%;
+    height: 30px; 
+    border-bottom: 2px dashed rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table-top .box1{
+    width: 150px;
+    height: 30px; 
+    
+    float: left;
+    text-align: center;
+    margin-right: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table-top .box2{
+    width: 200px;
+    height: 30px; 
+    
+    float: left;
+    text-align: center;
+    margin-right: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table-top .box3{
+    width: 200px;
+    height: 30px; 
+    
+    float: left;
+    text-align: center;
+    margin-right: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table-top .box4{
+    width: 200px;
+    height: 30px; 
+    
+    float: left;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table{
+    width: 99%;
+    height: 30px; 
+    border-bottom: 1px dotted rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table .box1{
+    width: 150px;
+    height: 30px; 
+    
+    float: left;
+    text-align: center;
+    margin-right: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table .box2{
+    width: 200px;
+    height: 30px; 
+    
+    float: left;
+    text-align: center;
+    margin-right: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table .box3{
+    width: 200px;
+    height: 30px; 
+    
+    float: left;
+    text-align: center;
+    margin-right: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+.tab_content .content-box3 .box-table .box4{
+    width: 200px;
+    height: 30px; 
+    float: left;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(247, 126, 13);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.tab_content .content-box4{
+    width: 100%;
+    height: 330px; 
+}
+.tab_content .content-box4 .box-title{
+    width: 450px;
+    height: 50px;
+    margin: auto;
+    margin-top: 30px;
+    text-align: center;
+    font-size: 25px;
+}
+
+.tab_content .content-box4 .box-top{
+    width: 835px;
+    height: 100px;
+   
+    margin: auto;
+    margin-top: 40px;
+}
+.tab_content .content-box4 .box-top input{
+    border: 2px solid rgb(247, 126, 13);
+    width: 200px;
+    height: 50px;
+    font-size: 30px;
+}
+.tab_content .content-box4 .box-bottom{
+    width: 102px;
+    height: 50px;
+   
+    margin: auto;
+    margin-top: 50px;
+}
+.tab_content .content-box4 .box-bottom button{
+    padding: 10px 24px;
+    background-color: rgb(247, 126, 13);
+    color: white;
+    border-radius: 5px;
+}
+
+/* 선택 된 탭 콘텐츠를 표시 */
+#box1:checked ~ #box1_content,
+#box2:checked ~ #box2_content,
+#box3:checked ~ #box3_content,
+#box4:checked ~ #box4_content{
+  display: block;
+}
+#myBtn p{
+	margin-top: 10px;
+}
+/* 선택된 탭 스타일 */
+.tabs input:checked + .tab_item {
+  background-color: rgb(247, 126, 13);
+  color: #fff;
+}

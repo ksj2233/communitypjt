@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="bar-box" th:fragment="footerFragment">
+
+	<link rel="stylesheet" href="/iconcss/google.css">
+	<link rel="stylesheet" href="/iconcss/capture.css">
+	<div class="navbottombar"></div>
+	<div class="bar">
+		<div class="mainbar">
+			<ul>
+                <li><a href="/hello/communitylist"><p class="imgtitle on">커뮤니티</p><img src="/img/1board.png" alt="" width="48px"
+                            height="48px"></a></li>
+                <li><a href="/hello/qnalist"><p class="imgtitle on">Q&A</p><img src="/img/2Q&A.png" alt="" width="48px"
+                            height="48px"></a>
+                </li>
+                <li><a href="/hello/noticelist"><p class="imgtitle on">공지사항</p><img src="/img/4notice.png" alt="" width="48px"
+                            height="48px"></a></li>
+                <li><a href="/hello/myspace"><p class="imgtitle on">내공간</p><img src="/img/3my.png" alt="" width="48px"
+                            height="48px"></a></li>
+                <li><a href="/hello/point"><p class="imgtitle on">포인트</p><img src="/img/5point.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="/hello/message"><p class="imgtitle on">쪽지</p><img src="/img/6message.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/room','blank','width=450 , height=700, top=400, left=900', true)"><p class="imgtitle on">채팅</p><img
+                            src="/img/7.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/calculator','blank','width=350 , height=650, top=400, left=900', true)"><p class="imgtitle on">계산기</p><img
+                            src="/img/8.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/memo','blank','width=450 , height=600, top=400, left=900', true)"><p class="imgtitle on">메모장</p><img
+                            src="/img/9.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/tetris','blank','width=450 , height=600, top=400, left=900', true)"><p class="imgtitle on">테트리스</p><img
+                            src="/img/10.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/compass','blank','width=450 , height=600, top=400, left=900', true)"><p class="imgtitle on">나침반</p><img
+                            src="/img/11.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""onclick="window.open('http://'+location.host+'/icon/stopwatch','blank','width=450 , height=450, top=400, left=900', true)"><p class="imgtitle on">스톱워치</p><img src="/img/12.png" alt="" width="48px" height="48px"></a></li>
+                <li><div><p class="imgtitle on">캡쳐</p><img src="/img/13.png" id="edit" alt="" width="48px" height="48px"><a id="target" style="display: none"></a></div></li>
+                <li><div><p class="imgtitle on">구글검색</p><img src="/img/14.png" alt="" width="48px" height="48px" class="google"></div></li>
+                <li><a href="https://www.github.com" target="_blanck"><p class="imgtitle on">깃허브</p><img src="/img/15.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.acmicpc.net" target="_blanck"><p class="imgtitle on">백준</p><img src="/img/16.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.mvnrepository.com" target="_blanck"><p class="imgtitle on">메이븐</p><img src="/img/17.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.fontawesome.com" target="_blanck"><p class="imgtitle on">폰트</p><img src="/img/18.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.jobkorea.co.kr" target="_blanck"><p class="imgtitle on">잡코리아</p><img src="/img/19.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.youtube.com" target="_blanck"><p class="imgtitle on">유튜브</p><img src="/img/20.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.keduit.com" target="_blanck"><p class="imgtitle on">한정교</p><img src="/img/21.png" alt="" width="48px" height="48px"></a></li>
+            </ul>
+		</div>
+	</div>
+
+<script src="/js/ajax/google.js"></script>
+<script src="/js/ajax/capture.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script async src="https://cse.google.com/cse.js?cx=e053556a1d0bc4606"></script>
+</div>
+
+</html>

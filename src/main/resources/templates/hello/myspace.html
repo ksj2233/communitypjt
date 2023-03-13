@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내정보</title>
+    <link rel="stylesheet" href="/css/myspace.css">
+    <link rel="stylesheet" href="/css/follower.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    
+</head>
+
+<body class="body">
+    <!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+
+    <!--content-->
+    <nav class="subnavbar">
+        <div class="box">
+            <ul>
+                 <li class="user-img">
+                	 <img th:if="${member.url == null}" src="/img/c1.png" alt="" width="70px" height="70px">
+                	 <img th:if="${member.url != null}" width="70px" height="70px" th:src="'/hello/display?fileName='+${member.url}" style="border-radius: 80%;">
+                </li> 
+                <li class="text" >
+                	<img th:if="${member.exvalue} < 100" src="/img/a1.png">
+                	<img th:if="${member.exvalue} >= 100 and ${member.exvalue} < 200" src="/img/a2.png">
+                	<img th:if="${member.exvalue} >= 200 and ${member.exvalue} < 300" src="/img/a3.png">
+                	<img th:if="${member.exvalue} >= 300 and ${member.exvalue} < 400" src="/img/a4.png">
+                	<img th:if="${member.exvalue} >= 400" src="/img/a5.png">
+                </li>
+                <li class="text"><p>경험치 : [[${member.exvalue}]]점</p></li>
+            </ul>
+        </div>
+        <div class="box1">
+            <h1>내공간</h1>
+        </div>
+        <div class="box2">
+            <h4 id="modalFollowing">팔로잉 : [[${following.size()}]]명</h4>
+        </div>
+        <div class="box3">
+            <h4 id="modalFollower">팔로워 : [[${follower.size()}]]명</h4>
+        </div>
+    </nav>
+    <div class="line">
+    </div>
+    <div class="content">
+        <div class="div-content">
+            <h1>소개</h1>
+            <div class="content-introduce">
+                	<h3>[[${member.introduce}]]</h3>
+                <div class="introduce-button myMamber">
+                    <button>정보수정</button>
+                </div>
+            </div>
+        </div>
+        <div class="div-content">
+            <h1>게시글</h1>
+            <div class="content-board">
+                <div class="register-box">
+                	<div class="box5">게시글 위치</div>
+                    <div class="box2">게시글 제목</div>
+                    <div class="box2">조회수</div>
+                    <div class="box3">추천수</div>
+                    <div class="box5">작성일</div>
+                </div>
+                <div class="register-box" th:each="dto:${myBoard}">
+                    <div class="box5">
+                    	<div th:if="${dto.boardcase == 1}">커뮤니티</div>
+                    	<div th:if="${dto.boardcase == 2}">공지사항</div>
+                    	<div th:if="${dto.boardcase == 3}">QnA</div>
+                    </div>
+                    <div class="box2">
+                    	<a class="text1" id="text1" th:if="${dto.boardcase == 1}" th:href="@{/hello/communityread(boardNum=${dto.boardNum})}">[[${dto.title}]]</a>
+                    	<a class="text1" id="text1" th:if="${dto.boardcase == 2}" th:href="@{/hello/noticeread(boardNum=${dto.boardNum})}">[[${dto.title}]]</a>
+                    	<a class="text1" id="text1" th:if="${dto.boardcase == 3}" th:href="@{/hello/qnaread(boardNum=${dto.boardNum})}">[[${dto.title}]]</a>
+                    </div>
+                    <div class="box2">[[${dto.views}]]</div>
+                    <div class="box3">[[${dto.blikes}]]</div>
+                    <div class="box5">[[${#temporals.format(dto.updateDate, 'yyyy/MM/dd')}]]</div>
+                </div>
+            </div>
+        </div>
+        <div class="div-content">
+            <h1>댓글 내역</h1>
+            <div class="content-chat">
+                <div class="register-box">
+                    <div class="box2">댓글 위치</div>
+                    <div class="box1">댓글 내용</div>
+                    <div class="box3">추천수</div>
+                    <div class="box5">등록일</div>
+                </div>
+               <div class="register-box" th:each="com:${myComment}">
+                    <div class="box2">
+                    	<div th:if="${com.boardcase == 1}">커뮤니티</div>
+                    	<div th:if="${com.boardcase == 2}">공지사항</div>
+                    	<div th:if="${com.boardcase == 3}">QnA</div>
+                    </div>
+                    <div class="box1" th:if="${com.boardcase == 1}" id="text1"><a class="text1" th:href="@{/hello/communityread(boardNum=${com.boardNum})}">[[${com.commentContent}]]</a></div>
+                    <div class="box1" th:if="${com.boardcase == 2}" id="text1"><a class="text1" th:href="@{/hello/noticeread(boardNum=${com.boardNum})}">[[${com.commentContent}]]</a></div>
+                    <div class="box1" th:if="${com.boardcase == 3}" id="text1"><a class="text1" th:href="@{/hello/qnaread(boardNum=${com.boardNum})}">[[${com.commentContent}]]</a></div>
+                    <div class="box3">[[${com.clikes}]]</div>
+                    <div class="box5">[[${#temporals.format(com.updatedate, 'yyyy/MM/dd')}]]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal_call">
+	</div>
+	
+	<!-- Modal -->
+<div id="myModal" class="modal call1 hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>팔로워</h2>
+    </div>
+    <div class="modal-body">
+      <div class="box" th:each="follow:${follower}">
+        <div class="box-userimg">
+                 	 <img th:if="${follow.url == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+                	 <img th:if="${follow.url != null}" width="30px" height="30px" th:src="'/hello/display?fileName='+${follow.url}" ></div>
+        <div class="box-username"><a th:href="@{/hello/spacepage(id=${follow.id})}">[[${follow.nickname}]]</a></div>
+      </div>
+      <!-- Add more content as needed -->
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<div id="myModal" class="modal call2 hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>팔로잉</h2>
+    </div>
+    <div class="modal-body">
+      <div class="box" th:each="followi:${following}">
+        <div class="box-userimg">
+                 	 <img th:if="${followi.url == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+                	 <img th:if="${followi.url != null}" width="30px" height="30px" th:src="'/hello/display?fileName='+${followi.url}" ></div>
+        <div class="box-username"><a th:href="@{/hello/spacepage(id=${followi.id})}">[[${followi.nickname}]]</a></div>
+      </div>
+     </div>
+  </div>
+ </div>
+      <!-- Add more content as needed -->
+    	 <!-- Modal -->
+   <div id="myModal" class="modal1 call3 hidden">
+        <div class="modal-content1">
+            <div class="modal-header1">
+                <span class="close">&times;</span>
+                <h2>정보수정</h2>
+            </div>
+            <div class="modal-body1">
+                <form name="signup-form" id="signup-form" th:action="@{/hello/modify}" enctype="multipart/form-data" method="post" th:onsubmit="return OkSubmit();">
+                    <div class="form-group1">
+                        <label for="user_id">
+                            아이디
+                        </label>
+                        <div class="input-box">
+                             <input type="text" name="id" th:value="${member.id}" readonly/>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group1">
+                        <label for="user_pw">
+                            비밀번호
+                        </label>
+                        <div class="input-box">
+                            <input type="password" name="pw" id="pw" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group1">
+                        <label for="user_pw">
+                            비밀번호 확인
+                        </label>
+                        <div class="input-box">
+                            <input type="password" name="pw_re" id="pw_re" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group1">
+                        <label for="user_name">
+                            이름
+                        </label>
+                        <div class="input-box">
+                            <input type="text" name="name" id="user_name" th:value="${member.name}" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group1">
+                        <label for="user_name">
+                            닉네임
+                        </label>
+                        <div class="input-box">
+                            <input type="text" name="nickname" class="nickname" id="user_nick" th:value="${member.nickname}"/>
+                            <input type="hidden" id="onid" th:value="${member.nickname}">
+                            <button type='button' id="nickChk" onclick="fn_nickChk();">중복 확인</button>
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <div class="form-group1">
+                        <label for="email">
+                            이메일
+                        </label>
+                        <div class="input-box">
+                            <input type="text" name="email" id="email" th:value="${member.email}"/>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group1">
+                        <label>
+                            사진넣기
+                        </label>
+                        <div class="custom-file">
+                            <input type="file" name="uploadfile" multiple="multiple" 
+	               					id="url">
+                        </div>
+                    </div>
+                    <br>
+                     <div class="form-group1">
+                        <label for="introduce">
+                            자기소개
+                        </label>
+                        <div class="input-box">
+                            <textarea name="introduce" id="introduce" rows="8" cols="30">[[${member.introduce}]]</textarea>
+                        </div>
+                    </div> 
+                    <input type="hidden" value=0 id="test_1" name="test_1">
+                    <input type="hidden" name="memberNum" th:value="${member.memberNum}">
+                    <input type="hidden" name="point" th:value="${member.point}">
+                    <input type="hidden" name="purview" th:value="${member.purview}">
+                    <input type="hidden" name="exvalue" th:value="${member.exvalue}">
+                    <br>
+                    <div class="form-group1 form-group2">
+                        <div class="form-button">
+                            <button type="submit">수정하기</button>
+                            <button type="reset">다시 작성</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+
+
+<script>
+
+  // 모달창 관련
+	$("#modalFollowing").on("click", function(){
+	   $(".call2").show();
+	});
+
+	$("#modalFollower").on("click", function(){
+	   $(".call1").show();
+	});
+	$(".myMamber").on("click", function(){
+	   $(".call3").show();
+	});
+
+	$(".close").on("click", function(){
+	   $(".call1").hide();
+	  $(".call2").hide();
+	  $(".call3").hide();
+	});
+
+	
+	var modal1 =$(".call1");
+	var modal2 =$(".call2");
+
+	
+	$(window).click(function(event) {
+	  if (event.target == modal1[0]) {
+	    modal1.css("display", "none");
+	  }
+	});
+	$(window).click(function(event) {
+	  if (event.target == modal2[0]) {
+	    modal2.css("display", "none");
+	  }
+	});
+  // 모달창 end
+  
+  
+</script>
+<script type="text/javascript">
+		
+	// ajax로 nickname 중복확인
+
+	function fn_nickChk(){
+	    var nick = $("#user_nick").val();
+	    var onid = $("#onid").val();
+
+	    $.ajax({
+	    	url: '/hello/register/chk/'+nick,
+	        type: 'POST',
+	        data: JSON.stringify(nick),
+	        contentType: "application/json; charset=utf-8",
+	        dataType: 'text',
+	        success: function (result) {
+	            if(onid == nick){
+	                alert('기존 닉네임은 사용가능합니다.');
+	                document.getElementById( 'test_1' ).value = 1;
+	            }else if(result == 0){
+	                alert('사용 가능한 닉네임입니다..');	            	
+	                document.getElementById( 'test_1' ).value = 1;
+	            }else{
+	                alert('닉네임이 중복되었습니다.');	            	
+	                document.getElementById( 'test_1' ).value = 0;
+	            }
+	        }
+	    })
+		};
+		
+	//회원가입시 문제있나 확인하기 
+	
+	 function OkSubmit() {
+        var pw1 = document.getElementById( 'pw' ).value;
+        var pw2 = document.getElementById( 'pw_re' ).value;
+        var test = document.getElementById( 'test_1' ).value;
+        if ( pw1 != pw2 ) {
+          alert( '비밀번호가 일치하지 않습니다.' );
+          return false;
+        }else if(pw1 == ""){
+        	alert("비밀번호를 입력해주세요.");
+        	return false;
+        }else if(test == 0){
+        	alert("중복확인을 눌러주세요.");
+        	return false;
+        }
+        
+        
+      }
+	
+	//글자수 표시 제한 걸기
+	
+	
+	function truncateText() {
+  var elements = document.getElementsByClassName("text1");
+  for (var i = 0; i < elements.length; i++) {
+    var html = elements[i].innerHTML.trim();
+    if (html.length > 15) {
+      html = html.substr(0, 15) + "...";
+      elements[i].innerHTML = html;
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  truncateText();
+});
+
+	</script>
+
+  <footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+
+</html>

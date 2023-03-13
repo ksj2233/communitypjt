@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인페이지</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/sign-up.css">
+
+</head>
+
+<body>
+    <!-- [header] 영역 시작 -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+	<!-- [header] 영역 끝 -->
+
+    <!--중간 body-content-->
+    <div class="body-content">
+        <div class="content-box1">
+        </div>
+        <div class="content-box2"></div>
+        <div class="content-box3"></div>
+        <div class="content-box4"></div>
+    </div>
+        <!-- <a id="open-login">로그인</a> -->
+    <!--로그인-->
+    <div class="login">
+        <div class="login_overlay"></div>
+        <div class="login_content">
+            <button>X</button>
+            <div class="login-wrapper">
+                <h2>로그인</h2>
+                <form method="post" th:action="@{/hello/login(id=${authMemberDTO})}" id="login-form">
+                    <input type="text" name="userId" placeholder="USERNAME">
+                    <input type="password" name="passwd" placeholder="PASSWORD">
+                    <input type="submit" value="Login">
+                </form> 
+                <div th:if="${param.error}">아이디와 비밀번호를 확인해주세요.</div>
+                <div th:if="${param.logout}">로그아웃 처리 되었습니다.</div>            
+                <div class="login-api">       
+                    <div class="kakaoimg"> <a href="/oauth2/authorization/kakao"><img src="/img/kakao.png" alt="" height="65px" width="363px"></a></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--메인바 공통-->
+    <div class="bar">
+        <div class="mainbar">
+            <ul>
+                <li><a href="/hello/communitylist"><p class="imgtitle on">커뮤니티</p><img src="/img/1board.png" alt="" width="48px"
+                            height="48px"></a></li>
+                <li><a href="/hello/qnalist"><p class="imgtitle on">Q&A</p><img src="/img/2Q&A.png" alt="" width="48px"
+                            height="48px"></a>
+                </li>
+                <li><a href="/hello/noticelist"><p class="imgtitle on">공지사항</p><img src="/img/4notice.png" alt="" width="48px"
+                            height="48px"></a></li>
+                <li><a href="/hello/myspace"><p class="imgtitle on">내공간</p><img src="/img/3my.png" alt="" width="48px"
+                            height="48px"></a></li>
+                <li><a href="/hello/point"><p class="imgtitle on">포인트</p><img src="/img/5point.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="/hello/message"><p class="imgtitle on">쪽지</p><img src="/img/6message.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/room','blank','width=450 , height=700, top=400, left=900', true)"><p class="imgtitle on">채팅</p><img
+                            src="/img/7.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/calculator','blank','width=350 , height=650, top=400, left=900', true)"><p class="imgtitle on">계산기</p><img
+                            src="/img/8.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/memo','blank','width=450 , height=600, top=400, left=900', true)"><p class="imgtitle on">메모장</p><img
+                            src="/img/9.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/tetris','blank','width=450 , height=600, top=400, left=900', true)"><p class="imgtitle on">테트리스</p><img
+                            src="/img/10.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""
+                        onclick="window.open('http://'+location.host+'/icon/compass','blank','width=450 , height=600, top=400, left=900', true)"><p class="imgtitle on">나침반</p><img
+                            src="/img/11.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href=""onclick="window.open('http://'+location.host+'/icon/stopwatch','blank','width=450 , height=450, top=400, left=900', true)"><p class="imgtitle on">스톱워치</p><img src="/img/12.png" alt="" width="48px" height="48px"></a></li>
+                <li><div><p class="imgtitle on">캡쳐</p><img src="/img/13.png" id="edit" alt="" width="48px" height="48px"><a id="target" style="display: none"></a></div></li>
+                <li><div><p class="imgtitle on">구글검색</p><img src="/img/14.png" alt="" width="48px" height="48px" class="google"></div></li>
+                <li><a href="https://www.github.com" target="_blanck"><p class="imgtitle on">깃허브</p><img src="/img/15.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.acmicpc.net" target="_blanck"><p class="imgtitle on">백준</p><img src="/img/16.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.mvnrepository.com" target="_blanck"><p class="imgtitle on">메이븐</p><img src="/img/17.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.fontawesome.com" target="_blanck"><p class="imgtitle on">폰트</p><img src="/img/18.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.jobkorea.co.kr" target="_blanck"><p class="imgtitle on">잡코리아</p><img src="/img/19.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.youtube.com" target="_blanck"><p class="imgtitle on">유튜브</p><img src="/img/20.png" alt="" width="48px" height="48px"></a></li>
+                <li><a href="https://www.keduit.com" target="_blanck"><p class="imgtitle on">한정교</p><img src="/img/21.png" alt="" width="48px" height="48px"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="modal_call">
+
+    </div>
+
+    <script>
+
+        function call_login() {
+            $.ajax({
+                type: "get",
+                url: "/modal/log-in",
+                dataType: "text",
+                success: function (data) {
+                    $("#modal_call").html('');
+                    var str = data.split('<body>');
+                    var str2 = str[1].split('</body>');
+                    console.log(str2[0]);
+                    $("#modal_call").html(str2[0]);
+                }
+            });
+        }
+
+        function call_sign_up() {
+            $.ajax({
+                type: "get",
+                url: "/modal/sign-up",
+                dataType: "text",
+                success: function (data) {
+                    $("#modal_call").html('');
+                    var str = data.split('<body>');
+                    var str2 = str[1].split('</body>');
+                    console.log(str2[0]);
+                    $("#modal_call").html(str2[0]);
+                }
+            });
+        }
+
+    </script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- <script type="text/javascript" src="/js/ajax/login.js"></script> -->
+    <script>
+        // const loginopenButton = document.getElementById("open-login");
+        const loginmodal = document.querySelector(".login");
+        const loginoverlay = loginmodal.querySelector(".login_overlay");
+        const logincloseBtn = loginmodal.querySelector("button");
+        // const loginopenModal = () => {
+        //     loginmodal.classList.remove("aaa");
+        // }
+        const logincloseModal = () => {
+            loginmodal.classList.add("aaa");
+        }
+        loginoverlay.addEventListener("click", logincloseModal);
+        logincloseBtn.addEventListener("click", logincloseModal);
+        
+        
+        // loginopenButton.addEventListener("click", loginopenModal);
+    </script>
+</body>
+
+</html>

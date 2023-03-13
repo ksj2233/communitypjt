@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/iconcss/calculator.css">
+
+</head>
+<body onresize="parent.resizeTo(350,670)" onload="parent.resizeTo(350,670)">
+    <main>
+        <input type="text" disabled>
+
+        <div class="button-wrap">
+            <!-- ac 클래스 추가 -->
+            <button data-type="ac" class="ac">AC</button>
+            <!--&divide;는 나눗셈 표시를 위한 html 토큰이다.-->
+            <button data-type="operator">&divide;</button>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <!--&times;는 곱셈 표시를 위한 html 토큰이다.-->
+            <button data-type="operator">&times;</button>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button data-type="operator">-</button>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button data-type="operator">+</button>
+            <!-- zero 클래스 추가 -->
+            <button class="zero">0</button>
+            <button>.</button>
+            <button data-type="equals" class="equals">=</button>
+        </div>
+    </main>
+    <script src="/js/ajax/calculator.js"></script>
+</body>
+</html>

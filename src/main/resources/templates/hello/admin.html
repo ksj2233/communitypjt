@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <style>
+    body {
+      text-align: center;
+    }
+
+    table {
+      margin: auto;
+      border: 1px solid black;
+    }
+    th {
+      margin: auto;
+      border: 1px solid black;
+    }
+    td {
+      margin: auto;
+      border: 1px solid black;
+    }
+
+    .pagination{ 
+      display: inline-flex;
+    }
+
+    li{
+      margin: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="hidden" name="memberPage" th:value="${memberList.number}">
+  <input type="hidden" name="boardPage" th:value="${boardList.number}">
+  <input type="hidden" name="commentPage" th:value="${commentList.number}">
+  <input type="hidden" name="messagePage" th:value="${messageList.number}">
+  <!-- Member List -->
+  <h2>회원 목록</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>유저 번호</th>
+        <th>유저 아이디</th>
+        <th>보유 포인트</th>
+        <th>유저 권한</th>
+        <th>유저 닉네임</th>
+        <th>유저 경험치</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="member : ${memberList}">
+        <td th:text="${member.memberNum}"></td>
+        <td th:text="${member.id}"></td>
+        <td th:text="${member.point}"></td>
+        <td th:text="${member.purview}"></td>
+        <td th:text="${member.nickname}"></td>
+        <td th:text="${member.exvalue}"></td>
+      </tr>
+    </tbody>
+  </table>
+
+    <select id="memberSel" name="memberSelect" id="">
+      <option value="member_num">회원번호</option>
+      <option value="nickname">닉네임</option>
+    </select>
+    <input id="memberVal" type="text" name="memberName">
+    <button type="submit">검색</button>
+
+  <!-- Member Pagination -->
+    <nav aria-label="Member Page Navigation">
+      <ul class="pagination">
+        <li th:classappend="${memberList.first} ? disabled : ''">
+          <a th:if="${not memberList.first}"
+             th:href="@{${#httpServletRequest.requestURI}(size=10, page=${memberList.number - 1}, memberPage=${memberList.number - 1}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.number})}"
+             aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        <th:block th:if="${memberList.totalPages > 1}">
+          <li th:classappend="${memberList.number == 1} ? active : ''">
+            <a th:href="@{${#httpServletRequest.requestURI}(size=10, page=0, memberPage=0, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.number})}">
+              <span th:text="1"></span>
+            </a>
+          </li>
+
+          <th:block th:if="${memberList.number > 6}">
+            <li>
+              <span>...</span>
+            </li>
+          </th:block>
+
+          <th:block th:each="i : ${#numbers.sequence(memberList.number - 5, memberList.number + 4)}" th:if="${i > 1 and i < memberList.totalPages - 1}">
+            <li th:classappend="${memberList.number + 1} == ${i} ? active : ''">
+              <a th:href="@{${#httpServletRequest.requestURI}(size=10, page=${i - 1}, memberPage=${i - 1}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.number})}">
+                <span th:text="${i}"></span>
+              </a>
+            </li>
+          </th:block>
+
+          <th:block th:if="${memberList.number < memberList.totalPages - 5}">
+            <li>
+              <span>...</span>
+            </li>
+          </th:block>
+
+          <li th:classappend="${memberList.number == memberList.totalPages} ? active : ''">
+            <a th:href="@{${#httpServletRequest.requestURI}(size=10, page=${memberList.totalPages - 1}, memberPage=${memberList.totalPages - 1}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.number})}">
+              <span th:text="${memberList.totalPages}"></span>
+            </a>
+          </li>
+        </th:block>
+
+        <li th:classappend="${memberList.last} ? disabled : ''">
+          <a th:if="${not memberList.last}"
+             th:href="@{${#httpServletRequest.requestURI}(size=10, page=${memberList.number + 1}, memberPage=${memberList.number + 1}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.number})}"
+             aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  <h2>게시물 목록</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>게시물 번호</th>
+        <th>게시물 제목</th>
+        <th>게시글 쓴 회원 번호</th>
+        <th>게시판 종류</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="board : ${boardList}">
+        <td th:text="${board.boardNum}"></td>
+        <td th:text="${board.title}"></td>
+        <td th:text="${board.memberNum}"></td>
+        <td th:text="${board.boardcase}"></td>
+      </tr>
+    </tbody>
+  </table>
+  <select name="boardSelect" id="">
+    <option value="">null</option>
+    <option value="board_num">회원번호</option>
+    <option value="title">제목</option>
+  </select>
+  <input type="text" name="boardTitle">
+  <button type="submit">검색</button>
+
+  <!-- boardList 페이징 -->
+    <nav aria-label="Board Page Navigation">
+      <ul class="pagination">
+        <li th:classappend="${boardList.first} ? disabled : ''">
+          <a th:if="${not boardList.first}"
+             th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number - 1}, commentPage=${commentList.number}, messagePage=${messageList.number})}"
+             aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        <th:block th:if="${boardList.totalPages > 1}">
+          <li th:classappend="${boardList.number == 1} ? active : ''">
+            <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=0, commentPage=${commentList.number}, messagePage=${messageList.number})}">
+              <span th:text="1"></span>
+            </a>
+          </li>
+
+          <th:block th:if="${boardList.number > 6}">
+            <li>
+              <span>...</span>
+            </li>
+          </th:block>
+
+          <th:block th:each="i : ${#numbers.sequence(boardList.number - 5, boardList.number + 4)}" th:if="${i > 1 and i < boardList.totalPages - 1}">
+            <li th:classappend="${boardList.number + 1} == ${i} ? active : ''">
+              <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${i - 1}, commentPage=${commentList.number}, messagePage=${messageList.number})}">
+                <span th:text="${i}"></span>
+              </a>
+            </li>
+          </th:block>
+
+          <th:block th:if="${boardList.number < boardList.totalPages - 5}">
+            <li>
+              <span>...</span>
+            </li>
+          </th:block>
+
+          <li th:classappend="${boardList.number == boardList.totalPages} ? active : ''">
+            <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.totalPages - 1}, commentPage=${commentList.number}, messagePage=${messageList.number})}">
+              <span th:text="${boardList.totalPages}"></span>
+            </a>
+          </li>
+        </th:block>
+
+        <li th:classappend="${boardList.last} ? disabled : ''">
+          <a th:if="${not boardList.last}"
+             th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number + 1}, commentPage=${commentList.number}, messagePage=${messageList.number})}"
+             aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  <h2>댓글 목록</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>댓글 번호</th>
+        <th>댓글이 쓰인 보드 번호</th>
+        <th>댓글 쓴 사람 번호</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="comment : ${commentList}">
+        <td th:text="${comment.boardCommentNum}"></td>
+        <td th:text="${comment.boardNum}"></td>
+        <td th:text="${comment.commenterNum}"></td>
+      </tr>
+    </tbody>
+  </table>
+  <select name="commentSelect" id="">
+    <option value="member_num">회원번호</option>
+    <option value="board_comment_num">댓글번호</option>
+  </select>
+  <input type="text" name="memberName">
+  <option value="">null</option>
+  <button type="submit">검색</button>
+
+  <!-- commentList 페이징 -->
+    <nav aria-label="Comment Page Navigation">
+      <ul class="pagination">
+        <li th:classappend="${commentList.first} ? disabled : ''">
+          <a th:if="${not commentList.first}"
+             th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.number - 1}, messagePage=${messageList.number})}"
+             aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        <th:block th:if="${commentList.totalPages > 1}">
+          <li th:classappend="${commentList.number == 1} ? active : ''">
+            <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=0, messagePage=${messageList.number})}">
+              <span th:text="1"></span>
+            </a>
+          </li>
+
+          <th:block th:if="${commentList.number > 6}">
+            <li>
+              <span>...</span>
+            </li>
+          </th:block>
+
+          <th:block th:each="i : ${#numbers.sequence(commentList.number - 5, commentList.number + 4)}" th:if="${i > 1 and i < commentList.totalPages - 1}">
+            <li th:classappend="${commentList.number + 1} == ${i} ? active : ''">
+              <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${i - 1}, messagePage=${messageList.number})}">
+                <span th:text="${i}"></span>
+              </a>
+            </li>
+          </th:block>
+
+          <th:block th:if="${commentList.number < commentList.totalPages - 5}">
+            <li>
+              <span>...</span>
+            </li>
+          </th:block>
+
+          <li th:classappend="${commentList.number == commentList.totalPages} ? active : ''">
+            <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.totalPages - 1}, messagePage=${messageList.number})}">
+              <span th:text="${commentList.totalPages}"></span>
+            </a>
+          </li>
+        </th:block>
+
+        <li th:classappend="${commentList.last} ? disabled : ''">
+          <a th:if="${not commentList.last}"
+             th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.number + 1}, messagePage=${messageList.number})}"
+             aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  <h2>메세지 목록</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>메세지 번호</th>
+        <th>받은이 번호</th>
+        <th>보낸이 번호</th>
+        <th>쪽지 제목</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="message : ${messageList}">
+        <td th:text="${message.messageNum}"></td>
+        <td th:text="${message.memberGet}"></td>
+        <td th:text="${message.memberGive}"></td>
+        <td th:text="${message.title}"></td>
+      </tr>
+    </tbody>
+  </table>
+  받는 사람
+  <input type="text" name="memberGive">
+  보낸사람
+  <input type="text" name="memberGet">
+  댓글 번호
+  <input type="text" name="messageNum">
+  <option value="">null</option>
+  <button type="submit">검색</button>
+
+  <nav aria-label="Message Page Navigation">
+    <ul class="pagination">
+      <li th:classappend="${messageList.first} ? disabled : ''">
+        <a th:if="${not messageList.first}"
+           th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.number - 1})}"
+           aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+  
+      <th:block th:if="${messageList.totalPages > 1}">
+        <li th:classappend="${messageList.number == 1} ? active : ''">
+          <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=0)}">
+            <span th:text="1"></span>
+          </a>
+        </li>
+  
+        <th:block th:if="${messageList.number > 6}">
+          <li>
+            <span>...</span>
+          </li>
+        </th:block>
+  
+        <th:block th:each="i : ${#numbers.sequence(messageList.number - 5, messageList.number + 4)}" th:if="${i > 1 and i < messageList.totalPages - 1}">
+          <li th:classappend="${messageList.number + 1} == ${i} ? active : ''">
+            <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${i - 1})}">
+              <span th:text="${i}"></span>
+            </a>
+          </li>
+        </th:block>
+  
+        <th:block th:if="${messageList.number < messageList.totalPages - 5}">
+          <li>
+            <span>...</span>
+          </li>
+        </th:block>
+  
+        <li th:classappend="${messageList.number == messageList.totalPages} ? active : ''">
+          <a th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.totalPages - 1})}">
+            <span th:text="${messageList.totalPages}"></span>
+          </a>
+        </li>
+      </th:block>
+  
+      <li th:classappend="${messageList.last} ? disabled : ''">
+        <a th:if="${not messageList.last}"
+           th:href="@{${#httpServletRequest.requestURI}(size=10, memberPage=${memberList.number}, boardPage=${boardList.number}, commentPage=${commentList.number}, messagePage=${messageList.number + 1})}"
+           aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <h2>쿠폰 관리</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>쿠폰번호</th>
+      <th>쿠폰 금액</th>
+      <th>사용여부</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="coupon : ${couponList}">
+      <td th:text="${coupon.serialnum}"></td>
+      <td th:text="${coupon.couponvalue}"></td>
+      <td th:text="${coupon.couponbool}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav aria-label="Coupon Page Navigation">
+    <ul class="pagination">
+      <li th:classappend="${couponList.first} ? disabled : ''">
+        <a th:if="${not couponList.first}"
+           th:href="@{${#httpServletRequest.requestURI}(couponPage=${couponList.number - 1})}"
+           aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+
+      <li th:each="i : ${#numbers.sequence(1, couponList.totalPages)}"
+          th:classappend="${couponList.number + 1} == ${i} ? active : ''">
+        <a th:href="@{${#httpServletRequest.requestURI}(couponPage=${i - 1})}"
+           th:text="${i}"></a>
+      </li>
+
+      <li th:classappend="${couponList.last} ? disabled : ''">
+        <a th:if="${not couponList.last}"
+           th:href="@{${#httpServletRequest.requestURI}(couponPage=${couponList.number + 1})}"
+           aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+      function memberSearch(){
+        var memberSel = $("#memberSel").val();
+        var memberVal = $("#memberVal").val();
+
+        var memData = {
+          'memberSel' : memberSel,
+          'memberVal' : memberVal
+        };
+
+        $.ajax({
+          url: '/hello/admin/member',
+          type:'post',
+          data:memData,
+          dataType: 'application/x-www-form-urlencoded; charset=UTF-8',
+          success:function(result){
+            
+          },
+          error:function(err){
+            alert(err);
+          }
+        })
+      }
+    </script>
+</body>
+
+</html>

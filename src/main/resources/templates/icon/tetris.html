@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<link rel="stylesheet" href="/iconcss/tetris.css">
+<body onresize="parent.resizeTo(450,750)" onload="parent.resizeTo(450,750)">
+    <div class="wrapper">
+        <div class="game-text">게임종료<button>기록저장 후 다시시작</button></div>
+        <div class="score2" th:each="score : ${max}">
+            <img class="profile-img" th:if="${score.url == null}" src="/img/c1.png" alt="" width="30px" height="30px">
+            <img class="profile-img" th:if="${score.url != null}" th:src="'/hello/display?fileName='+${score.url}" width="30px" height="30px">
+            <p class="nick_score">닉네임 : [[${score.nickName}]] , 점수 : [[${score.score}]]</p>
+        </div>
+        <div class="score">0</div>
+        <div class="playground">
+            <ul></ul>
+        </div>
+    </div>
+    <script src="/js/ajax/tetris.js" type="module"></script>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+</body>
+</html>
